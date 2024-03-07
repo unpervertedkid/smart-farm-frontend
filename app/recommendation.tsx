@@ -23,6 +23,7 @@ import { useToast } from "@/components/ui/use-toast"
 import { ToastAction } from "@/components/ui/toast"
 import DatePickerWithPresets from "@/components/ui/datepicker"
 import LocationDrawer from "@/components/ui/location-drawer"
+import { ReloadIcon } from "@radix-ui/react-icons"
 
 interface LocationData {
     longitude: number;
@@ -35,6 +36,8 @@ export default function CropRecommendation() {
     const [isDrawerOpen, setIsDrawerOpen] = React.useState(false);
     const [locationStatus, setLocationStatus] = React.useState<'idle' | 'success' | 'error'>('idle');
     const crops = ['Wheat', 'Rice', 'Corn', 'Soybeans', 'Cotton'];
+
+    const [isLoading, setIsLoading] = React.useState(false);
 
     const { toast } = useToast();
 
@@ -65,6 +68,14 @@ export default function CropRecommendation() {
         );
     };
 
+    const handleGetRecommendation = async () => {
+        setIsLoading(true);
+        // TODO: Make API call to get recommendation
+        // In the mean time we can simulate a delay
+        await new Promise((resolve) => setTimeout(resolve, 2000));
+        setIsLoading(false);
+    }
+
     return (
         <div className="pt-4 px-4 md:px-8 lg:px-16">
             <Tabs defaultValue="crop-recommendation" className="w-full md:w-1/2 lg:w-1/3 mx-auto">
@@ -94,8 +105,8 @@ export default function CropRecommendation() {
                                 </div>
                             </div>
                         </CardContent>
-                        <CardFooter className="flex items-center justify-between">
-                            <div className="flex items-center space-x-2">
+                        <CardFooter className="flex flex-col items-start space-y-2">
+                            <div className="flex items-center space-x-2 mb-5">
                                 <Checkbox id="terms" />
                                 <label
                                     htmlFor="terms"
@@ -104,9 +115,18 @@ export default function CropRecommendation() {
                                     Accept Terms and Conditions
                                 </label>
                             </div>
-                            <Button variant="default">
-                                Get Recommendation
-                            </Button>
+                            <div className="w-full">
+                                {isLoading ? (
+                                    <Button disabled className="w-full px-5 py-3 mt-5">
+                                        <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
+                                        Please wait
+                                    </Button>
+                                ) : (
+                                    <Button variant="default" className="w-full px-5 py-3 mt-5" onClick={handleGetRecommendation}>
+                                        Get Recommendation
+                                    </Button>
+                                )}
+                            </div>
                         </CardFooter>
                     </Card>
                 </TabsContent>
@@ -126,8 +146,11 @@ export default function CropRecommendation() {
                                 <LocationDrawer locationStatus={locationStatus} handleLocationAccess={handleLocationAccess} isDrawerOpen={isDrawerOpen} setIsDrawerOpen={setIsDrawerOpen} setLocationStatus={setLocationStatus} />
                             </div>
                             <div className="space-y-1">
+                                <div className="space-y-1">
+                                    <Label htmlFor="crop">Crop</Label>
+                                </div>
                                 <Select>
-                                    <SelectTrigger>
+                                    <SelectTrigger className="w-[180px]">
                                         <SelectValue placeholder="Select a crop" />
                                     </SelectTrigger>
                                     <SelectContent>
@@ -140,8 +163,8 @@ export default function CropRecommendation() {
                                 </Select>
                             </div>
                         </CardContent>
-                        <CardFooter className="flex items-center justify-between">
-                            <div className="flex items-center space-x-2">
+                        <CardFooter className="flex flex-col items-start space-y-2">
+                            <div className="flex items-center space-x-2 mb-5">
                                 <Checkbox id="terms" />
                                 <label
                                     htmlFor="terms"
@@ -150,9 +173,18 @@ export default function CropRecommendation() {
                                     Accept Terms and Conditions
                                 </label>
                             </div>
-                            <Button variant="default">
-                                Get Recommendation
-                            </Button>
+                            <div className="w-full">
+                                {isLoading ? (
+                                    <Button disabled className="w-full px-5 py-3 mt-5">
+                                        <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
+                                        Please wait
+                                    </Button>
+                                ) : (
+                                    <Button variant="default" className="w-full px-5 py-3 mt-5" onClick={handleGetRecommendation}>
+                                        Get Recommendation
+                                    </Button>
+                                )}
+                            </div>
                         </CardFooter>
                     </Card>
                 </TabsContent>
