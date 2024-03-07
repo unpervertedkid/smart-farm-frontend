@@ -26,18 +26,20 @@ const LocationDrawer: React.FC<LocationDrawerProps> = ({ locationStatus, handleL
             <div className="mx-auto w-full max-w-sm">
                 <DrawerHeader>
                     <DrawerTitle>Grant Location access</DrawerTitle>
-                    <DrawerDescription>Location access is required by our systems to provide you with personalized results</DrawerDescription>
+                    <DrawerDescription>Location access is required by our systems to provide you with personalized results. Your data is not stored or shared with anyone.</DrawerDescription>
                 </DrawerHeader>
             </div>
             <DrawerFooter>
-                <Button variant="default" onClick={handleLocationAccess}>Grant Access</Button>
+                <Button variant="default" onClick={() => {
+                    handleLocationAccess();
+                }}>Grant Access</Button>
                 <DrawerClose asChild>
-                    <Button 
-                    variant="destructive"
-                    onClick={() => {
-                        setIsDrawerOpen(false);
-                        setLocationStatus('error');
-                    }}
+                    <Button
+                        variant="destructive"
+                        onClick={() => {
+                            setIsDrawerOpen(false);
+                            setLocationStatus('error');
+                        }}
                     >Cancel</Button>
                 </DrawerClose>
             </DrawerFooter>
