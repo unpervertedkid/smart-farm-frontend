@@ -70,7 +70,7 @@ export default function CropRecommendation() {
             <Tabs defaultValue="crop-recommendation" className="w-full md:w-1/2 lg:w-1/3 mx-auto">
                 <TabsList className="grid w-full grid-cols-2">
                     <TabsTrigger value="crop-recommendation">Crop Recommendation</TabsTrigger>
-                    <TabsTrigger value="plant-time">Plant Time Recommendation</TabsTrigger>
+                    <TabsTrigger value="plant-time">Planting Schedule</TabsTrigger>
                 </TabsList>
                 <TabsContent value="crop-recommendation">
                     <Card>
