@@ -1,6 +1,5 @@
 "use client"
 import { Button } from "@/components/ui/button"
-import { Calendar } from "@/components/ui/calendar"
 import {
     Card,
     CardContent,
@@ -20,9 +19,10 @@ import {
     TabsTrigger,
 } from "@/components/ui/tabs"
 import React from "react"
-import { Drawer, DrawerClose, DrawerContent, DrawerDescription, DrawerFooter, DrawerHeader, DrawerTitle, DrawerTrigger } from "@/components/ui/drawer"
 import { useToast } from "@/components/ui/use-toast"
 import { ToastAction } from "@/components/ui/toast"
+import DatePickerWithPresets from "@/components/ui/datepicker"
+import LocationDrawer from "@/components/ui/location-drawer"
 
 interface LocationData {
     longitude: number;
@@ -85,41 +85,12 @@ export default function CropRecommendation() {
                                 <Label htmlFor="location">Location</Label>
                             </div>
                             <div className="space-y-1">
-                                <Drawer open={isDrawerOpen}>
-                                    <DrawerTrigger asChild>
-                                        <Button
-                                            variant={locationStatus === 'error' ? 'destructive' : 'outline'}
-                                            onClick={() => setIsDrawerOpen(true)}
-                                            disabled={locationStatus === 'success'}
-                                        >
-                                            {locationStatus === 'idle' ? 'Grant Location Access' : locationStatus === 'success' ? 'Location Data Acquired' : 'Retry Granting Location Access'}
-                                        </Button>
-                                    </DrawerTrigger>
-                                    <DrawerContent>
-                                        <div className="mx-auto w-full max-w-sm">
-                                            <DrawerHeader>
-                                                <DrawerTitle>Grant Location access</DrawerTitle>
-                                                <DrawerDescription>Location access is required by our systems to provide you with personalized results</DrawerDescription>
-                                            </DrawerHeader>
-                                        </div>
-                                        <DrawerFooter>
-                                            <Button variant="default" onClick={handleLocationAccess}>Grant Access</Button>
-                                            <DrawerClose asChild>
-                                                <Button variant="destructive">Cancel</Button>
-                                            </DrawerClose>
-                                        </DrawerFooter>
-                                    </DrawerContent>
-                                </Drawer>
+                                <LocationDrawer locationStatus={locationStatus} handleLocationAccess={handleLocationAccess} isDrawerOpen={isDrawerOpen} setIsDrawerOpen={setIsDrawerOpen} setLocationStatus={setLocationStatus} />
                             </div>
                             <div className="space-y-1">
                                 <Label htmlFor="plant-date">Plant Date</Label>
-                                <div className="flex justify-center">
-                                    <Calendar
-                                        mode="single"
-                                        selected={date}
-                                        onSelect={setDate}
-                                        className="rounded-md border shadow"
-                                    />
+                                <div className="flex">
+                                    <DatePickerWithPresets date={date} setDate={setDate} />
                                 </div>
                             </div>
                         </CardContent>
@@ -152,31 +123,7 @@ export default function CropRecommendation() {
                                 <Label htmlFor="location">Location</Label>
                             </div>
                             <div className="space-y-1">
-                                <Drawer open={isDrawerOpen}>
-                                    <DrawerTrigger asChild>
-                                        <Button
-                                            variant={locationStatus === 'error' ? 'destructive' : 'outline'}
-                                            onClick={() => setIsDrawerOpen(true)}
-                                            disabled={locationStatus === 'success'}
-                                        >
-                                            {locationStatus === 'idle' ? 'Grant Location Access' : locationStatus === 'success' ? 'Location Data Acquired' : 'Retry Granting Location Access'}
-                                        </Button>
-                                    </DrawerTrigger>
-                                    <DrawerContent>
-                                        <div className="mx-auto w-full max-w-sm">
-                                            <DrawerHeader>
-                                                <DrawerTitle>Grant Location access</DrawerTitle>
-                                                <DrawerDescription>Location access is required by our systems to provide you with personalized results</DrawerDescription>
-                                            </DrawerHeader>
-                                        </div>
-                                        <DrawerFooter>
-                                            <Button variant="default" onClick={handleLocationAccess}>Grant Access</Button>
-                                            <DrawerClose asChild>
-                                                <Button variant="destructive">Cancel</Button>
-                                            </DrawerClose>
-                                        </DrawerFooter>
-                                    </DrawerContent>
-                                </Drawer>
+                                <LocationDrawer locationStatus={locationStatus} handleLocationAccess={handleLocationAccess} isDrawerOpen={isDrawerOpen} setIsDrawerOpen={setIsDrawerOpen} setLocationStatus={setLocationStatus} />
                             </div>
                             <div className="space-y-1">
                                 <Select>
