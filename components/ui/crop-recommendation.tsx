@@ -7,6 +7,7 @@ import LocationDrawer from "@/components/ui/location-drawer";
 import { Checkbox } from "@/components/ui/checkbox";
 import { ReloadIcon } from "@radix-ui/react-icons";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import CropCarousel from "@/components/ui/crop-carousel"
 
 interface CropRecommendationProps {
     date: Date | undefined;
@@ -99,12 +100,7 @@ export const CropRecommendationResultCard: React.FC<CropRecommendationResultsPro
             </CardHeader>
             <CardContent className="space-y-2">
                 <div className="space-y-1">
-                    <Label htmlFor="recommended-crops">Recommended Crops</Label>
-                    <ul className="list-disc list-inside">
-                        {recommendedCrops.map((crop) => (
-                            <li key={crop}>{crop}</li>
-                        ))}
-                    </ul>
+                    <CropCarousel crops={recommendedCrops} />
                 </div>
             </CardContent>
             <CardFooter className="flex flex-col items-start space-y-2 w-full">
