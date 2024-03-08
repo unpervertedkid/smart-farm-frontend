@@ -1,17 +1,4 @@
 "use client"
-import { Button } from "@/components/ui/button"
-import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardFooter,
-    CardHeader,
-    CardTitle,
-} from "@/components/ui/card"
-import { Checkbox } from "@/components/ui/checkbox"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import {
     Tabs,
     TabsContent,
@@ -21,9 +8,8 @@ import {
 import React from "react"
 import { useToast } from "@/components/ui/use-toast"
 import { ToastAction } from "@/components/ui/toast"
-import DatePickerWithPresets from "@/components/ui/datepicker"
-import LocationDrawer from "@/components/ui/location-drawer"
-import { ReloadIcon } from "@radix-ui/react-icons"
+
+import { CropRecommendationFormCard, CropRecommendationResultCard, PlantTimeRecommendationFormCard, PlantTimeRecommendationResultCard } from "@/components/ui/crop-recommendation"
 
 interface LocationData {
     longitude: number;
@@ -36,9 +22,12 @@ export default function CropRecommendation() {
     const [isDrawerOpen, setIsDrawerOpen] = React.useState(false);
     const [locationStatus, setLocationStatus] = React.useState<'idle' | 'success' | 'error'>('idle');
     const crops = ['Wheat', 'Rice', 'Corn', 'Soybeans', 'Cotton'];
+    const [areCropResultsReady, setAreCropResultsReady] = React.useState(false);
+    const [recommendedCrops, setRecommendedCrops] = React.useState<string[]>([]);
+    const [arePlantTimeResultsReady, setArePlantTimeResultsReady] = React.useState(false);
+    const [recommendedPlantTime, setRecommendedPlantTime] = React.useState<{ startDate: Date, endDate: Date } | null>(null);
 
     const [isLoading, setIsLoading] = React.useState(false);
-
     const { toast } = useToast();
 
     const handleLocationAccess = () => {
@@ -68,11 +57,34 @@ export default function CropRecommendation() {
         );
     };
 
-    const handleGetRecommendation = async () => {
+    const handleGetCropRecommendation = async () => {
         setIsLoading(true);
         // TODO: Make API call to get recommendation
         // In the mean time we can simulate a delay
         await new Promise((resolve) => setTimeout(resolve, 2000));
+        // Some fake data to test
+        const recommendedCrops = ['Wheat', 'Rice', 'Corn', 'Soybeans', 'Cotton'];
+        setRecommendedCrops(recommendedCrops);
+        setAreCropResultsReady(true);
+        setIsLoading(false);
+    }
+
+    const handleGetPlantTimeRecommendation = async () => {
+        setIsLoading(true);
+        // TODO: Make API call to get recommendation
+        // In the mean time we can simulate a delay
+        await new Promise((resolve) => setTimeout(resolve, 2000));
+        // Some fake data to test
+        const startDate = new Date();
+        const endDate = new Date();
+        endDate.setDate(startDate.getDate() + 30);
+        const recommendedPlantTime = {
+            startDate,
+            endDate,
+        };
+
+        setRecommendedPlantTime(recommendedPlantTime);
+        setArePlantTimeResultsReady(true);
         setIsLoading(false);
     }
 
@@ -84,109 +96,18 @@ export default function CropRecommendation() {
                     <TabsTrigger value="plant-time">Planting Schedule</TabsTrigger>
                 </TabsList>
                 <TabsContent value="crop-recommendation">
-                    <Card>
-                        <CardHeader>
-                            <CardTitle>Crop Recommendation</CardTitle>
-                            <CardDescription>
-                                Get recommendations on what crops to plant given your locations weather and soil conditions.
-                            </CardDescription>
-                        </CardHeader>
-                        <CardContent className="space-y-2">
-                            <div className="space-y-1">
-                                <Label htmlFor="location">Location</Label>
-                            </div>
-                            <div className="space-y-1">
-                                <LocationDrawer locationStatus={locationStatus} handleLocationAccess={handleLocationAccess} isDrawerOpen={isDrawerOpen} setIsDrawerOpen={setIsDrawerOpen} setLocationStatus={setLocationStatus} />
-                            </div>
-                            <div className="space-y-1">
-                                <Label htmlFor="plant-date">Plant Date</Label>
-                                <div className="flex">
-                                    <DatePickerWithPresets date={date} setDate={setDate} />
-                                </div>
-                            </div>
-                        </CardContent>
-                        <CardFooter className="flex flex-col items-start space-y-2">
-                            <div className="flex items-center space-x-2 mb-5">
-                                <Checkbox id="terms" />
-                                <label
-                                    htmlFor="terms"
-                                    className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                                >
-                                    Accept Terms and Conditions
-                                </label>
-                            </div>
-                            <div className="w-full">
-                                {isLoading ? (
-                                    <Button disabled className="w-full px-5 py-3 mt-5">
-                                        <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
-                                        Please wait
-                                    </Button>
-                                ) : (
-                                    <Button variant="default" className="w-full px-5 py-3 mt-5" onClick={handleGetRecommendation}>
-                                        Get Recommendation
-                                    </Button>
-                                )}
-                            </div>
-                        </CardFooter>
-                    </Card>
+                    {
+                        areCropResultsReady ? (
+                            <CropRecommendationResultCard recommendedCrops={recommendedCrops} resetRecommendation={() => setAreCropResultsReady(false)} />
+                        ) : (<CropRecommendationFormCard date={date} setDate={setDate} locationStatus={locationStatus} handleLocationAccess={handleLocationAccess} isDrawerOpen={isDrawerOpen} setIsDrawerOpen={setIsDrawerOpen} setLocationStatus={setLocationStatus} handleGetRecommendation={handleGetCropRecommendation} isLoading={isLoading} />)
+                    }
                 </TabsContent>
                 <TabsContent value="plant-time">
-                    <Card>
-                        <CardHeader>
-                            <CardTitle>Plant Time Recommendation</CardTitle>
-                            <CardDescription>
-                                Get a prediction of the best time to plant a certain crop based on past trends.
-                            </CardDescription>
-                        </CardHeader>
-                        <CardContent className="space-y-2">
-                            <div className="space-y-1">
-                                <Label htmlFor="location">Location</Label>
-                            </div>
-                            <div className="space-y-1">
-                                <LocationDrawer locationStatus={locationStatus} handleLocationAccess={handleLocationAccess} isDrawerOpen={isDrawerOpen} setIsDrawerOpen={setIsDrawerOpen} setLocationStatus={setLocationStatus} />
-                            </div>
-                            <div className="space-y-1">
-                                <div className="space-y-1">
-                                    <Label htmlFor="crop">Crop</Label>
-                                </div>
-                                <Select>
-                                    <SelectTrigger className="w-[180px]">
-                                        <SelectValue placeholder="Select a crop" />
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                        {crops.map((crop) => (
-                                            <SelectItem key={crop} value={crop}>
-                                                {crop}
-                                            </SelectItem>
-                                        ))}
-                                    </SelectContent>
-                                </Select>
-                            </div>
-                        </CardContent>
-                        <CardFooter className="flex flex-col items-start space-y-2">
-                            <div className="flex items-center space-x-2 mb-5">
-                                <Checkbox id="terms" />
-                                <label
-                                    htmlFor="terms"
-                                    className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                                >
-                                    Accept Terms and Conditions
-                                </label>
-                            </div>
-                            <div className="w-full">
-                                {isLoading ? (
-                                    <Button disabled className="w-full px-5 py-3 mt-5">
-                                        <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
-                                        Please wait
-                                    </Button>
-                                ) : (
-                                    <Button variant="default" className="w-full px-5 py-3 mt-5" onClick={handleGetRecommendation}>
-                                        Get Recommendation
-                                    </Button>
-                                )}
-                            </div>
-                        </CardFooter>
-                    </Card>
+                    {
+                        arePlantTimeResultsReady ?
+                            (<PlantTimeRecommendationResultCard recommendedPlantTime={recommendedPlantTime} resetRecommendation={() => setArePlantTimeResultsReady(false)} />) :
+                            (<PlantTimeRecommendationFormCard locationStatus={locationStatus} handleLocationAccess={handleLocationAccess} isDrawerOpen={isDrawerOpen} setIsDrawerOpen={setIsDrawerOpen} setLocationStatus={setLocationStatus} handleGetRecommendation={handleGetPlantTimeRecommendation} isLoading={isLoading} crops={crops} />)
+                    }
                 </TabsContent>
             </Tabs>
         </div>
