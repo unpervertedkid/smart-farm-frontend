@@ -77,7 +77,7 @@ export default function CropRecommendation() {
         // Some fake data to test
         const startDate = new Date();
         const endDate = new Date();
-        endDate.setDate(startDate.getDate() + 30);
+        endDate.setDate(startDate.getDate() + 90);
         const recommendedPlantTime = {
             startDate,
             endDate,

@@ -8,6 +8,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { ReloadIcon } from "@radix-ui/react-icons";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import CropCarousel from "@/components/ui/crop-carousel"
+import DateDisplay from "@/components/ui/date-display"
 
 interface CropRecommendationProps {
     date: Date | undefined;
@@ -225,9 +226,7 @@ export const PlantTimeRecommendationResultCard: React.FC<PlantTimeRecommendation
             </CardHeader>
             <CardContent className="space-y-2">
                 <div className="space-y-1">
-                    <Label htmlFor="recommended-crops">Recommended Planting Time</Label>
-                    <p>Start Date: {startDate.toDateString()}</p>
-                    <p>End Date: {endDate.toDateString()}</p>
+                    <DateDisplay from={startDate} to={endDate} />
                 </div>
             </CardContent>
             <CardFooter className="flex flex-col items-start space-y-2">
