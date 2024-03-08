@@ -3,7 +3,6 @@
     "image": "mcr.microsoft.com/devcontainers/javascript-node:20",
     "forwardPorts": [3000],
     "postCreateCommand": "yarn",
-    "postStartCommand": "yarn dev",
     "hostRequirements": {
         "cpus": 4,
         "memory": "32gb"
