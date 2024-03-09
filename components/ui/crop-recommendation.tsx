@@ -11,6 +11,7 @@ import { ReloadIcon } from "@radix-ui/react-icons";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import CropCarousel from "@/components/ui/crop-carousel"
 import DateDisplay from "@/components/ui/date-display"
+import { TermsAndConditions } from "@/components/ui/terms-and-conditions"
 
 interface CropRecommendationProps {
     date: Date | undefined;
@@ -58,15 +59,9 @@ export const CropRecommendationFormCard: React.FC<CropRecommendationProps> = ({
                 </div>
             </CardContent>
             <CardFooter className="flex flex-col items-start space-y-2">
-                <div className="flex items-center space-x-2 mb-5">
-                    <Checkbox id="terms" />
-                    <label
-                        htmlFor="terms"
-                        className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                    >
-                        Accept Terms and Conditions
-                    </label>
-                </div>
+                <TermsAndConditions onAccept={() => {
+                    // TODO: Add onAccept functionality
+                }} />
                 <div className="w-full">
                     {isLoading ? (
                         <Button disabled className="w-full px-5 py-3 mt-5">
@@ -173,15 +168,9 @@ export const PlantTimeRecommendationFormCard: React.FC<PlantTimeRecommendationPr
                 </div>
             </CardContent>
             <CardFooter className="flex flex-col items-start space-y-2">
-                <div className="flex items-center space-x-2 mb-5">
-                    <Checkbox id="terms" />
-                    <label
-                        htmlFor="terms"
-                        className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                    >
-                        Accept Terms and Conditions
-                    </label>
-                </div>
+                <TermsAndConditions onAccept={() => {
+                    // TODO: Add onAccept functionality
+                }} />
                 <div className="w-full">
                     {isLoading ? (
                         <Button disabled className="w-full px-5 py-3 mt-5">
