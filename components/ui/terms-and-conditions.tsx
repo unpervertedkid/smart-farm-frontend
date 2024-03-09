@@ -3,15 +3,15 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
 
 interface TermsAndConditionsProps {
-    onAccept: () => void;
+    onAcceptChange: () => void;
 }
 
 export const TermsAndConditions: React.FC<TermsAndConditionsProps> = ({
-    onAccept
+    onAcceptChange
 }) => {
     return (
         <div className="flex items-center space-x-2 mb-5">
-            <Checkbox id="terms" onCheckedChange={onAccept} />
+            <Checkbox id="terms" onCheckedChange={onAcceptChange} />
             <label
                 htmlFor="terms"
                 className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"

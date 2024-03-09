@@ -23,6 +23,7 @@ interface CropRecommendationProps {
     setLocationStatus: (status: 'idle' | 'success' | 'error') => void;
     handleGetRecommendation: () => void;
     isLoading: boolean;
+    onTermsAcceptChange: () => void;
 }
 
 export const CropRecommendationFormCard: React.FC<CropRecommendationProps> = ({
@@ -35,6 +36,7 @@ export const CropRecommendationFormCard: React.FC<CropRecommendationProps> = ({
     setLocationStatus,
     handleGetRecommendation,
     isLoading,
+    onTermsAcceptChange,
 }) => {
     return (
         <Card>
@@ -59,9 +61,7 @@ export const CropRecommendationFormCard: React.FC<CropRecommendationProps> = ({
                 </div>
             </CardContent>
             <CardFooter className="flex flex-col items-start space-y-2">
-                <TermsAndConditions onAccept={() => {
-                    // TODO: Add onAccept functionality
-                }} />
+                <TermsAndConditions onAcceptChange={onTermsAcceptChange} />
                 <div className="w-full">
                     {isLoading ? (
                         <Button disabled className="w-full px-5 py-3 mt-5">
@@ -122,6 +122,7 @@ interface PlantTimeRecommendationProps {
     handleGetRecommendation: () => void;
     isLoading: boolean;
     crops: string[];
+    onTermsAcceptChange: () => void;
 }
 
 export const PlantTimeRecommendationFormCard: React.FC<PlantTimeRecommendationProps> = ({
@@ -133,6 +134,7 @@ export const PlantTimeRecommendationFormCard: React.FC<PlantTimeRecommendationPr
     handleGetRecommendation,
     isLoading,
     crops,
+    onTermsAcceptChange,
 }) => {
     return (
         <Card>
@@ -168,9 +170,7 @@ export const PlantTimeRecommendationFormCard: React.FC<PlantTimeRecommendationPr
                 </div>
             </CardContent>
             <CardFooter className="flex flex-col items-start space-y-2">
-                <TermsAndConditions onAccept={() => {
-                    // TODO: Add onAccept functionality
-                }} />
+                <TermsAndConditions onAcceptChange={onTermsAcceptChange} />
                 <div className="w-full">
                     {isLoading ? (
                         <Button disabled className="w-full px-5 py-3 mt-5">

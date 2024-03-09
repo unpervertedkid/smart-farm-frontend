@@ -20,6 +20,7 @@ export default function CropRecommendation() {
     const [date, setDate] = React.useState<Date | undefined>(new Date());
     const [location, setLocation] = React.useState<LocationData | null>(null);
     const [isDrawerOpen, setIsDrawerOpen] = React.useState(false);
+    const [areTermsAndConditionsAccepted, setTermsAndConditions] = React.useState(false);
     const [locationStatus, setLocationStatus] = React.useState<'idle' | 'success' | 'error'>('idle');
     const crops = ['Wheat', 'Rice', 'Corn', 'Soybeans', 'Cotton'];
     const [areCropResultsReady, setAreCropResultsReady] = React.useState(false);
@@ -99,14 +100,14 @@ export default function CropRecommendation() {
                     {
                         areCropResultsReady ? (
                             <CropRecommendationResultCard recommendedCrops={recommendedCrops} resetRecommendation={() => setAreCropResultsReady(false)} />
-                        ) : (<CropRecommendationFormCard date={date} setDate={setDate} locationStatus={locationStatus} handleLocationAccess={handleLocationAccess} isDrawerOpen={isDrawerOpen} setIsDrawerOpen={setIsDrawerOpen} setLocationStatus={setLocationStatus} handleGetRecommendation={handleGetCropRecommendation} isLoading={isLoading} />)
+                        ) : (<CropRecommendationFormCard date={date} setDate={setDate} locationStatus={locationStatus} handleLocationAccess={handleLocationAccess} isDrawerOpen={isDrawerOpen} setIsDrawerOpen={setIsDrawerOpen} setLocationStatus={setLocationStatus} handleGetRecommendation={handleGetCropRecommendation} isLoading={isLoading} onTermsAcceptChange={() => setTermsAndConditions(!areTermsAndConditionsAccepted)} />)
                     }
                 </TabsContent>
                 <TabsContent value="plant-time">
                     {
                         arePlantTimeResultsReady ?
                             (<PlantTimeRecommendationResultCard recommendedPlantTime={recommendedPlantTime} resetRecommendation={() => setArePlantTimeResultsReady(false)} />) :
-                            (<PlantTimeRecommendationFormCard locationStatus={locationStatus} handleLocationAccess={handleLocationAccess} isDrawerOpen={isDrawerOpen} setIsDrawerOpen={setIsDrawerOpen} setLocationStatus={setLocationStatus} handleGetRecommendation={handleGetPlantTimeRecommendation} isLoading={isLoading} crops={crops} />)
+                            (<PlantTimeRecommendationFormCard locationStatus={locationStatus} handleLocationAccess={handleLocationAccess} isDrawerOpen={isDrawerOpen} setIsDrawerOpen={setIsDrawerOpen} setLocationStatus={setLocationStatus} handleGetRecommendation={handleGetPlantTimeRecommendation} isLoading={isLoading} crops={crops} onTermsAcceptChange={() => setTermsAndConditions(!areTermsAndConditionsAccepted)} />)
                     }
                 </TabsContent>
             </Tabs>
