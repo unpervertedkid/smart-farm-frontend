@@ -1,5 +1,7 @@
 import React from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
+import { ExclamationTriangleIcon } from "@radix-ui/react-icons"
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import DatePickerWithPresets from "@/components/ui/datepicker";
@@ -104,8 +106,9 @@ export const CropRecommendationResultCard: React.FC<CropRecommendationResultsPro
                     <CropCarousel crops={recommendedCrops} />
                 </div>
             </CardContent>
-            <CardFooter className="flex flex-col items-start space-y-2 w-full">
-                <div className="flex items-center space-x-2 mb-5 w-full">
+            <CardFooter className="flex flex-col items-start space-y-2">
+                <div className="flex flex-col items-center space-x-2 mb-5 w-full">
+                    <Caution />
                     <Button variant="default" className="w-full px-5 py-3 mt-5" onClick={resetRecommendation}>
                         Reset
                     </Button>
@@ -230,7 +233,8 @@ export const PlantTimeRecommendationResultCard: React.FC<PlantTimeRecommendation
                 </div>
             </CardContent>
             <CardFooter className="flex flex-col items-start space-y-2">
-                <div className="flex items-center space-x-2 mb-5 w-full">
+                <div className="flex flex-col items-center space-x-2 mb-5 w-full">
+                    <Caution />
                     <Button variant="default" className="w-full px-5 py-3 mt-5" onClick={resetRecommendation}>
                         Reset
                     </Button>
@@ -238,4 +242,17 @@ export const PlantTimeRecommendationResultCard: React.FC<PlantTimeRecommendation
             </CardFooter>
         </Card>
     );
+}
+
+
+export function Caution() {
+    return (
+        <Alert>
+            <ExclamationTriangleIcon className="h-4 w-4" />
+            <AlertTitle>Caution!</AlertTitle>
+            <AlertDescription>
+                Please note that AI recommendations can sometimes be incorrect. We strongly advise conducting further research before using these recommendations.
+            </AlertDescription>
+        </Alert>
+    )
 }
