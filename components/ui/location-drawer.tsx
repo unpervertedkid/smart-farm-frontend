@@ -26,7 +26,7 @@ const LocationDrawer: React.FC<LocationDrawerProps> = ({ locationStatus, handleL
             <div className="mx-auto w-full max-w-sm">
                 <DrawerHeader>
                     <DrawerTitle>Grant Location access</DrawerTitle>
-                    <DrawerDescription>Location access is required by our systems to provide you with personalized results. Your data is not stored or shared with anyone.</DrawerDescription>
+                    <DrawerDescription>Location access is required by our systems to provide you with relevant results tailored to the specific weather and soil conditions of your location. Your data is not stored or shared with anyone.</DrawerDescription>
                 </DrawerHeader>
             </div>
             <DrawerFooter>
