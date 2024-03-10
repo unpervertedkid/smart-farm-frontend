@@ -27,6 +27,9 @@ interface DatePickerWithPresetsProps {
 }
 
 export const DatePickerWithPresets: React.FC<DatePickerWithPresetsProps> = ({ date, setDate }) => {
+    let sixMonthsFromNow = new Date();
+    sixMonthsFromNow.setDate(sixMonthsFromNow.getDate() + 180);
+
     return (
         <Popover>
             <PopoverTrigger asChild>
@@ -76,7 +79,11 @@ export const DatePickerWithPresets: React.FC<DatePickerWithPresetsProps> = ({ da
                     </SelectContent>
                 </Select>
                 <div className="rounded-md border">
-                    <Calendar mode="single" selected={date} onSelect={setDate} />
+                    <Calendar mode="single"
+                        selected={date} onSelect={setDate}
+                        fromDate={new Date()}
+                        toDate={sixMonthsFromNow}
+                    />
                 </div>
             </PopoverContent>
         </Popover>
