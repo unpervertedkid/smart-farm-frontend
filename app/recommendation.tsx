@@ -91,8 +91,8 @@ export default function CropRecommendation() {
 
     return (
         <div className="pt-4 px-4 md:px-8 lg:px-16">
-            <Tabs defaultValue="crop-recommendation" className="w-full md:w-1/2 lg:w-1/3 mx-auto">
-                <TabsList className="grid w-full grid-cols-2">
+            <Tabs defaultValue="crop-recommendation" className="w-full md:w-3/4 lg:w-1/2 xl:w-1/3 mx-auto">
+                <TabsList className="grid w-full grid-cols-2 md:grid-cols-3 lg:grid-cols-2">
                     <TabsTrigger value="crop-recommendation">Crop Recommendation</TabsTrigger>
                     <TabsTrigger value="plant-time">Planting Schedule</TabsTrigger>
                 </TabsList>
