@@ -93,7 +93,7 @@ export const CropRecommendationResultCard: React.FC<CropRecommendationResultsPro
             <CardHeader>
                 <CardTitle>Crop Recommendation</CardTitle>
                 <CardDescription>
-                    Crop recommendation results based on your location and plant date.
+                    Based on your location's weather and soil information, below are the recommended crops.
                 </CardDescription>
             </CardHeader>
             <CardContent className="space-y-2">
