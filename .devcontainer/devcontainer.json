@@ -2,7 +2,7 @@
     "name": "Node.js",
     "image": "mcr.microsoft.com/devcontainers/javascript-node:20",
     "forwardPorts": [3000],
-    "postCreateCommand": "yarn",
+    "postCreateCommand": ["yarn", "git pull"],
     "hostRequirements": {
         "cpus": 4,
         "memory": "32gb"
