@@ -1,6 +1,23 @@
 import * as React from "react";
-import { Card, CardContent, CardFooter } from "@/components/ui/card";
-import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious, CarouselApi } from "@/components/ui/carousel";
+import {
+    Card,
+    CardContent,
+    CardFooter
+} from "@/components/ui/card";
+import {
+    Carousel,
+    CarouselContent,
+    CarouselItem, CarouselNext,
+    CarouselPrevious,
+    CarouselApi
+} from "@/components/ui/carousel";
+import {
+    Popover,
+    PopoverContent,
+    PopoverTrigger,
+} from "@/components/ui/popover"
+import { InfoCircledIcon } from "@radix-ui/react-icons";
+
 
 export default function CropCarousel({ crops }: { crops: string[] }) {
     const [api, setApi] = React.useState<CarouselApi>();
@@ -36,9 +53,9 @@ export default function CropCarousel({ crops }: { crops: string[] }) {
                                             <span className="text-4xl font-semibold">{crop}</span>
                                         </CardContent>
                                         <CardFooter className="flex justify-center">
-                                                <div className="">
-                                                <span className="text-sm text-gray-500">Confidence: {confidence}%</span> {/* Display the confidence level */}
-                                                </div>
+                                            <div className="">
+                                                <ConfidenceLevel confidence={confidence} />
+                                            </div>
                                         </CardFooter>
                                     </Card>
                                 </div>
@@ -52,6 +69,32 @@ export default function CropCarousel({ crops }: { crops: string[] }) {
             <div className="py-2 text-center text-sm text-muted-foreground">
                 Recommendation {current} of {count}
             </div>
+        </div>
+    );
+}
+
+interface ConfidenceLevelProps {
+    confidence: number;
+}
+
+function ConfidenceLevel({ confidence }: ConfidenceLevelProps) {
+    return (
+        <div className="flex items-center">
+            <span className="text-sm text-gray-500">Confidence: {confidence}%</span>
+            <Popover>
+                <PopoverTrigger asChild>
+                    <button className="ml-2">
+                        <InfoCircledIcon className="w-4 h-4 text-gray-500" />
+                    </button>
+                </PopoverTrigger>
+                <PopoverContent sideOffset={5} alignOffset={5}>
+                    <div className="p-2 text-sm text-gray-500">
+                        Confidence refers to the probability that the crop recommendation is accurate.
+                        It is calculated based on historical data and the current conditions.
+                        A higher confidence level indicates a higher probability of accuracy.
+                    </div>
+                </PopoverContent>
+            </Popover>
         </div>
     );
 }
