@@ -54,6 +54,8 @@ export default function DateDisplay({ from, to }: DatePickerWithRangeProps) {
                     selected={date}
                     onSelect={() => {}}
                     numberOfMonths={1}
+                    fromDate={from}
+                    toDate={to}
                 />
             </div>
         </div>
