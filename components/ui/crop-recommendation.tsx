@@ -238,7 +238,7 @@ export function Caution() {
     return (
         <Alert>
             <ExclamationTriangleIcon className="h-4 w-4" />
-            <AlertTitle>Caution!</AlertTitle>
+            <AlertTitle>Caution</AlertTitle>
             <AlertDescription>
                 Please note that AI recommendations can sometimes be incorrect. We strongly advise conducting further research before using these recommendations.
             </AlertDescription>

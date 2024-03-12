@@ -89,7 +89,7 @@ function ConfidenceLevel({ confidence }: ConfidenceLevelProps) {
                 </PopoverTrigger>
                 <PopoverContent sideOffset={5} alignOffset={5}>
                     <div className="p-2 text-sm text-gray-500">
-                        "Confidence" refers to the probability that the crop recommendation is accurate.
+                        Confidence refers to the probability that the crop recommendation is accurate.
                         A higher confidence level indicates a higher probability of accuracy.
                     </div>
                 </PopoverContent>
