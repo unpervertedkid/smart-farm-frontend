@@ -11,12 +11,7 @@ import {
     CarouselPrevious,
     CarouselApi
 } from "@/components/ui/carousel";
-import {
-    Popover,
-    PopoverContent,
-    PopoverTrigger,
-} from "@/components/ui/popover"
-import { InfoCircledIcon } from "@radix-ui/react-icons";
+import InfoPopover from "@/components/ui/info-popover"
 
 
 export default function CropCarousel({ crops }: { crops: string[] }) {
@@ -81,19 +76,11 @@ function ConfidenceLevel({ confidence }: ConfidenceLevelProps) {
     return (
         <div className="flex items-center">
             <span className="text-sm text-gray-500">Confidence: {confidence}%</span>
-            <Popover>
-                <PopoverTrigger asChild>
-                    <button className="ml-2">
-                        <InfoCircledIcon className="w-4 h-4 text-gray-500" />
-                    </button>
-                </PopoverTrigger>
-                <PopoverContent sideOffset={5} alignOffset={5}>
-                    <div className="p-2 text-sm text-gray-500">
-                        Confidence refers to the probability that the crop recommendation is accurate.
-                        A higher confidence level indicates a higher probability of accuracy.
-                    </div>
-                </PopoverContent>
-            </Popover>
+            <InfoPopover
+                message="The confidence level is a measure of how confident the model is in its recommendation. 
+            A higher confidence level indicates a higher likelihood that the recommendation is accurate."
+                popoverContentClass="p-2 text-sm text-gray-500"
+            />
         </div>
     );
 }

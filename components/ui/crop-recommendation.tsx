@@ -6,12 +6,12 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import DatePickerWithPresets from "@/components/ui/datepicker";
 import LocationDrawer from "@/components/ui/location-drawer";
-import { Checkbox } from "@/components/ui/checkbox";
 import { ReloadIcon } from "@radix-ui/react-icons";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import CropCarousel from "@/components/ui/crop-carousel"
 import DateDisplay from "@/components/ui/date-display"
 import { TermsAndConditions } from "@/components/ui/terms-and-conditions"
+import InfoPopover from "@/components/ui/info-popover"
 
 interface CropRecommendationProps {
     date: Date | undefined;
@@ -47,17 +47,27 @@ export const CropRecommendationFormCard: React.FC<CropRecommendationProps> = ({
                 </CardDescription>
             </CardHeader>
             <CardContent className="space-y-2">
-                <div className="space-y-1">
+                <div className="space-y-1 flex items-center">
                     <Label htmlFor="location">Location</Label>
+                    <InfoPopover
+                        message="We use your location to get the weather and soil information to make the best crop recommendation for you."
+                        popoverContentClass="p-2 text-sm text-gray-500"
+                        side="top"
+                    />
                 </div>
                 <div className="space-y-1">
                     <LocationDrawer locationStatus={locationStatus} handleLocationAccess={handleLocationAccess} isDrawerOpen={isDrawerOpen} setIsDrawerOpen={setIsDrawerOpen} setLocationStatus={setLocationStatus} />
                 </div>
-                <div className="space-y-1">
+                <div className="space-y-1 flex items-center">
                     <Label htmlFor="plant-date">Plant Date</Label>
-                    <div className="flex">
-                        <DatePickerWithPresets date={date} setDate={setDate} />
-                    </div>
+                    <InfoPopover
+                        message="The date you plan to plant the crop. We use this to get the best crop recommendation for you."
+                        popoverContentClass="p-2 text-sm text-gray-500"
+                        side="top"
+                    />
+                </div>
+                <div className="space-y-1">
+                    <DatePickerWithPresets date={date} setDate={setDate} />
                 </div>
             </CardContent>
             <CardFooter className="flex flex-col items-start space-y-2">
@@ -145,15 +155,25 @@ export const PlantTimeRecommendationFormCard: React.FC<PlantTimeRecommendationPr
                 </CardDescription>
             </CardHeader>
             <CardContent className="space-y-2">
-                <div className="space-y-1">
+                <div className="space-y-1 flex items-center">
                     <Label htmlFor="location">Location</Label>
+                    <InfoPopover
+                        message="We use your location to get the weather and soil information to make the best crop recommendation for you."
+                        popoverContentClass="p-2 text-sm text-gray-500"
+                        side="top"
+                    />
                 </div>
                 <div className="space-y-1">
                     <LocationDrawer locationStatus={locationStatus} handleLocationAccess={handleLocationAccess} isDrawerOpen={isDrawerOpen} setIsDrawerOpen={setIsDrawerOpen} setLocationStatus={setLocationStatus} />
                 </div>
                 <div className="space-y-1">
-                    <div className="space-y-1">
+                    <div className="space-y-1 flex items-center">
                         <Label htmlFor="crop">Crop</Label>
+                        <InfoPopover
+                            message="The crop for which you want to get the best time to plant."
+                            popoverContentClass="p-2 text-sm text-gray-500"
+                            side="top"
+                        />
                     </div>
                     <Select>
                         <SelectTrigger className="w-[180px]">
