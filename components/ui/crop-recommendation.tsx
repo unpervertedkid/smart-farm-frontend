@@ -1,17 +1,16 @@
-import React from "react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
-import { ExclamationTriangleIcon } from "@radix-ui/react-icons"
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
-import { Label } from "@/components/ui/label";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import CropCarousel from "@/components/ui/crop-carousel";
+import DateDisplay from "@/components/ui/date-display";
 import DatePickerWithPresets from "@/components/ui/datepicker";
+import InfoPopover from "@/components/ui/info-popover";
+import { Label } from "@/components/ui/label";
 import LocationDrawer from "@/components/ui/location-drawer";
-import { ReloadIcon } from "@radix-ui/react-icons";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import CropCarousel from "@/components/ui/crop-carousel"
-import DateDisplay from "@/components/ui/date-display"
-import { TermsAndConditions } from "@/components/ui/terms-and-conditions"
-import InfoPopover from "@/components/ui/info-popover"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { TermsAndConditions } from "@/components/ui/terms-and-conditions";
+import { ExclamationTriangleIcon, ReloadIcon } from "@radix-ui/react-icons";
+import React from "react";
 
 interface CropRecommendationProps {
     date: Date | undefined;

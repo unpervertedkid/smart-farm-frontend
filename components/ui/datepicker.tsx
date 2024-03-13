@@ -1,26 +1,25 @@
 "use client"
 
-import * as React from "react"
-import { CalendarIcon } from "@radix-ui/react-icons"
-import { addDays, format } from "date-fns"
-import { startOfWeek, addWeeks, addMonths } from "date-fns";
+import { CalendarIcon } from "@radix-ui/react-icons";
+import { addMonths, addWeeks, format, startOfWeek } from "date-fns";
+import * as React from "react";
 
 
-import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
-import { Calendar } from "@/components/ui/calendar"
+import { Button } from "@/components/ui/button";
+import { Calendar } from "@/components/ui/calendar";
 import {
     Popover,
     PopoverContent,
     PopoverTrigger,
-} from "@/components/ui/popover"
+} from "@/components/ui/popover";
 import {
     Select,
     SelectContent,
     SelectItem,
     SelectTrigger,
     SelectValue,
-} from "@/components/ui/select"
+} from "@/components/ui/select";
+import { cn } from "@/lib/utils";
 interface DatePickerWithPresetsProps {
     date: Date | undefined;
     setDate: React.Dispatch<React.SetStateAction<Date | undefined>>;

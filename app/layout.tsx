@@ -1,10 +1,10 @@
+import { ThemeProvider } from "@/components/theme-provider";
+import Navbar from "@/components/ui/navbar";
+import { Toaster } from "@/components/ui/toaster";
+import { Analytics } from '@vercel/analytics/react';
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { Toaster } from "@/components/ui/toaster";
-import Navbar from "@/components/ui/navbar";
-import { ThemeProvider } from "@/components/theme-provider";
-import { Analytics } from '@vercel/analytics/react';
 
 const inter = Inter({ subsets: ["latin"] });
 

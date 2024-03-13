@@ -1,4 +1,3 @@
-import * as React from "react";
 import {
     Card,
     CardContent,
@@ -6,12 +5,13 @@ import {
 } from "@/components/ui/card";
 import {
     Carousel,
+    CarouselApi,
     CarouselContent,
     CarouselItem, CarouselNext,
-    CarouselPrevious,
-    CarouselApi
+    CarouselPrevious
 } from "@/components/ui/carousel";
-import InfoPopover from "@/components/ui/info-popover"
+import InfoPopover from "@/components/ui/info-popover";
+import * as React from "react";
 
 
 export default function CropCarousel({ crops }: { crops: string[] }) {

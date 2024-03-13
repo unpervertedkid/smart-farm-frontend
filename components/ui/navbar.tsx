@@ -1,7 +1,6 @@
 "use client"
-import { NavigationMenu, NavigationMenuItem, NavigationMenuList, NavigationMenuTrigger } from '@radix-ui/react-navigation-menu';
-import React from 'react';
 import ModeToggle from '@/components/ui/modetoggle';
+import { NavigationMenu, NavigationMenuItem, NavigationMenuList, NavigationMenuTrigger } from '@radix-ui/react-navigation-menu';
 
 function Navbar() {
     return (

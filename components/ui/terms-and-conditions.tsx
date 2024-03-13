@@ -1,6 +1,6 @@
-import React from "react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
+import React from "react";
 
 interface TermsAndConditionsProps {
     onAcceptChange: () => void;
