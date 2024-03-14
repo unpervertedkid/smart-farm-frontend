@@ -10,6 +10,7 @@ import { useToast } from "@/components/ui/use-toast"
 import React from "react"
 
 import { CropRecommendationFormCard, CropRecommendationResultCard, PlantTimeRecommendationFormCard, PlantTimeRecommendationResultCard } from "@/components/ui/crop-recommendation"
+import { getCropRecommendation, getPlantTimeRecommendation } from "@/api/recommendationAPI"
 
 interface LocationData {
     longitude: number;
