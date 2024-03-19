@@ -131,6 +131,7 @@ interface PlantTimeRecommendationProps {
     handleGetRecommendation: () => void;
     isLoading: boolean;
     crops: string[];
+    setSelectedCrop: React.Dispatch<React.SetStateAction<string| null>>;
     onTermsAcceptChange: () => void;
 }
 
@@ -143,6 +144,7 @@ export const PlantTimeRecommendationFormCard: React.FC<PlantTimeRecommendationPr
     handleGetRecommendation,
     isLoading,
     crops,
+    setSelectedCrop,
     onTermsAcceptChange,
 }) => {
     return (
@@ -174,14 +176,14 @@ export const PlantTimeRecommendationFormCard: React.FC<PlantTimeRecommendationPr
                             side="top"
                         />
                     </div>
-                    <Select>
+                    <Select onValueChange={value => setSelectedCrop(value)}>
                         <SelectTrigger className="w-[180px]">
                             <SelectValue placeholder="Select a crop" />
                         </SelectTrigger>
                         <SelectContent>
                             {crops.map((crop) => (
                                 <SelectItem key={crop} value={crop}>
-                                    {crop}
+                                    {crop.toUpperCase()}
                                 </SelectItem>
                             ))}
                         </SelectContent>
@@ -221,7 +223,7 @@ export const PlantTimeRecommendationResultCard: React.FC<PlantTimeRecommendation
             <CardHeader>
                 <CardTitle>Plant Time Recommendation</CardTitle>
                 <CardDescription>
-                    Plant time recommendation results based on your location and crop selection.
+                    Here are the optimal planting times for your selected crop, tailored specifically to your location.
                 </CardDescription>
             </CardHeader>
             <CardContent className="space-y-2">
