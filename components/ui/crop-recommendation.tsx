@@ -208,7 +208,7 @@ export const PlantTimeRecommendationFormCard: React.FC<PlantTimeRecommendationPr
 };
 
 interface PlantTimeRecommendationResultsProps {
-    recommendedPlantTime: { startDate: Date; endDate: Date } | null;
+    recommendedPlantTime: { startDate: Date; endDate: Date }[] | null;
     resetRecommendation: () => void;
 }
 
@@ -216,17 +216,6 @@ export const PlantTimeRecommendationResultCard: React.FC<PlantTimeRecommendation
     recommendedPlantTime,
     resetRecommendation,
 }) => {
-    let startDate, endDate;
-
-    if (recommendedPlantTime) {
-        startDate = recommendedPlantTime.startDate;
-        endDate = recommendedPlantTime.endDate;
-    } else {
-        // Default to today's date and end date to today's date plus three months
-        startDate = new Date();
-        endDate = new Date();
-        endDate.setMonth(startDate.getMonth() + 3);
-    }
     return (
         <Card>
             <CardHeader>
@@ -237,7 +226,11 @@ export const PlantTimeRecommendationResultCard: React.FC<PlantTimeRecommendation
             </CardHeader>
             <CardContent className="space-y-2">
                 <div className="space-y-1">
-                    <DateDisplay from={startDate} to={endDate} />
+                    {
+                        recommendedPlantTime?.map((dateRange, index) => (
+                            <DateDisplay key={index} from={dateRange.startDate} to={dateRange.endDate} />
+                        ))
+                    }
                 </div>
             </CardContent>
             <CardFooter className="flex flex-col items-start space-y-2">
