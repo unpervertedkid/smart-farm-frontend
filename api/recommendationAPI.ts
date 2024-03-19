@@ -1,4 +1,4 @@
-interface CropRecommendationRequestInterface {
+export interface CropRecommendationRequestInterface {
   location: LocationInterface;
   plantingDate: Date;
 }
@@ -9,41 +9,56 @@ interface LocationInterface {
 }
 
 interface CropRecommendationResponseInterface {
-  crops: [crop: CropRecommendtionInterface];
+  status: number;
+  crops: CropRecommendtionInterface[];
+  errorMessage?: string;
 }
-type Crop = string;
 
 interface CropRecommendtionInterface {
-  name: Crop;
+  crop: string;
   confidence: number;
 }
 
-/**
- * Fetches crop recommendations based on the provided location and planting date.
- *
- * @param {CropRecommendationRequestInterface} request - The request payload containing location and planting date.
- * @returns {Promise<CropRecommendationResponseInterface>} - A promise that resolves to the crop recommendation response.
- */
-export function getCropRecommendation(
+export async function getCropRecommendation(
   request: CropRecommendationRequestInterface
 ): Promise<CropRecommendationResponseInterface> {
-  // TODO: Implement the API call
-  return fetch("https://api.example.com/recommendation", {
+  const response = await fetch("https://smart-farm-backend-iuns2ztryq-bq.a.run.app/crop-recommendations", {
     method: "POST",
-    body: JSON.stringify(request),
+    body: JSON.stringify({
+      latitude: request.location.latitude,
+      longitude: request.location.longitude
+    }),
     headers: {
       "Content-Type": "application/json",
     },
-  }).then((response) => response.json());
+  });
+
+  console.log(response)
+  let crops: CropRecommendtionInterface[] = [];
+  if (response.ok) {
+    const data = await response.json();
+    crops = data.map((item: any) => ({
+      crop: item.crop,
+      confidence: item.confidence,
+    }));
+  }
+
+  return {
+    status: response.status,
+    crops: crops,
+    errorMessage: response.statusText,
+  };
 }
 
-interface PlantTimeRecommendationRequestInterface {
+export interface PlantTimeRecommendationRequestInterface {
   location: LocationInterface;
-  crop: Crop;
+  crop: string;
 }
 
 interface PlantTimeRecommendationResponseInterface {
-    dateRanges: [dateRange: DateRangeInterface];
+    status: number;
+    errorMessage?: string;
+    dateRanges: DateRangeInterface[];
 }
 
 interface DateRangeInterface {
@@ -52,20 +67,41 @@ interface DateRangeInterface {
 }
 
 /**
- * Fetches plant time recommendations based on the provided location and crop.
- *
- * @param {PlantTimeRecommendationRequestInterface} request - The request payload containing location and crop.
- * @returns {Promise<PlantTimeRecommendationResponseInterface>} - A promise that resolves to the plant time recommendation response.
+ * Retrieves plant time recommendation based on the provided request.
+ * @param request - The request object containing location and crop information.
+ * @returns A promise that resolves to the plant time recommendation response.
  */
-export function getPlantTimeRecommendation(
-    request: PlantTimeRecommendationRequestInterface
+export async function getPlantTimeRecommendation(
+  request: PlantTimeRecommendationRequestInterface
 ): Promise<PlantTimeRecommendationResponseInterface> {
-    // TODO: Implement the API call
-    return fetch("https://api.example.com/plant-time", {
-        method: "POST",
-        body: JSON.stringify(request),
-        headers: {
-            "Content-Type": "application/json",
-        },
-    }).then((response) => response.json());
+  const response = await fetch(
+    "https://smart-farm-backend-iuns2ztryq-bq.a.run.app/plant-time-recommendations",
+    {
+      method: "POST",
+      body: JSON.stringify({
+        latitude: request.location.latitude,
+        longitude: request.location.longitude,
+        crop: request.crop,
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
+
+  let dateRanges: DateRangeInterface[] = [];
+  const data = await response.json();
+
+  if (response.ok) {
+    dateRanges = data.map((item: any) => ({
+      startDate: new Date(item.startDate),
+      endDate: new Date(item.endDate),
+    }));
+  } 
+
+  return {
+    status: response.status,
+    dateRanges: dateRanges,
+    errorMessage: response.statusText,
+  };
 }
