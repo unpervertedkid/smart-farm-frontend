@@ -141,6 +141,8 @@ export default function CropRecommendation() {
         } catch (error) {
             console.error(error);
         }
+        
+        setIsLoading(false);
     }
 
     return (
