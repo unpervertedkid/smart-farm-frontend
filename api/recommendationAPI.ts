@@ -93,11 +93,11 @@ export async function getPlantTimeRecommendation(
   const data = await response.json();
 
   if (response.ok) {
-    dateRanges = data.map((item: any) => ({
-      startDate: new Date(item.startDate),
-      endDate: new Date(item.endDate),
-    }));
-  } 
+      dateRanges = data.map((item: any) => ({
+        startDate: new Date(item.start_date),
+        endDate: new Date(item.end_date),
+      }));
+  }
 
   return {
     status: response.status,
