@@ -4,14 +4,16 @@ import React from "react";
 
 interface TermsAndConditionsProps {
     onAcceptChange: () => void;
+    areTermsAndConditionsAccepted: boolean;
 }
 
 export const TermsAndConditions: React.FC<TermsAndConditionsProps> = ({
-    onAcceptChange
+    onAcceptChange,
+    areTermsAndConditionsAccepted,
 }) => {
     return (
         <div className="flex items-center space-x-2 mb-5">
-            <Checkbox id="terms" onCheckedChange={onAcceptChange} />
+            <Checkbox id="terms" onCheckedChange={onAcceptChange} checked={areTermsAndConditionsAccepted}/>
             <label
                 htmlFor="terms"
                 className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
