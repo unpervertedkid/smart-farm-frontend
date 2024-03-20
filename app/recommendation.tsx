@@ -14,6 +14,7 @@ import { CropRecommendationRequestInterface, PlantTimeRecommendationRequestInter
 import { CropRecommendationFormCard, CropRecommendationResultCard, PlantTimeRecommendationFormCard, PlantTimeRecommendationResultCard } from "@/components/ui/crop-recommendation"
 
 import { useLogEvent } from "@/hooks/useLogEvent";
+import { log } from "console"
 
 interface LocationData {
     longitude: number;
@@ -113,7 +114,7 @@ export default function CropRecommendation() {
             const recommendedCrops = response.crops.map(crop => crop.crop);
             setRecommendedCrops(recommendedCrops);
             setAreCropResultsReady(true);
-            useLogEvent({ feature: "CropRecommendation", status: "success" });
+            logCropRecommendation("success");
         } else {
             const errorMessage = response.errorMessage;
             toast(
@@ -124,11 +125,16 @@ export default function CropRecommendation() {
                 }
             )
             console.error(`Error: ${response.status}`);
-            useLogEvent({ feature: "CropRecommendation", status: "error" });
+            logCropRecommendation("error");
         }
 
         setIsLoading(false);
     };
+
+    const logCropRecommendation = (status: 'success' | 'unsupported' | 'error') => {
+        useLogEvent({ feature: "CropRecommendation", status });
+    }
+
 
     const handleGetPlantTimeRecommendation = async () => {
         if (!location) {
@@ -162,7 +168,7 @@ export default function CropRecommendation() {
             if (response.status === 200) {
                 setRecommendedPlantTime(response.dateRanges);
                 setArePlantTimeResultsReady(true);
-                useLogEvent({ feature: "PlantTimeRecommendation", status: "success" });
+                logPlantTimeRecommendation("success");
             } else {
                 const errorMessage = response.errorMessage;
                 toast(
@@ -172,7 +178,7 @@ export default function CropRecommendation() {
                         description: errorMessage || "An error occurred while fetching planting schedule",
                     }
                 )
-                useLogEvent({ feature: "PlantTimeRecommendation", status: "error" });
+                logPlantTimeRecommendation("error");
                 console.error(`Error: ${response.status}`);
             }
         } catch (error) {
@@ -180,6 +186,10 @@ export default function CropRecommendation() {
         }
 
         setIsLoading(false);
+    }
+
+    const logPlantTimeRecommendation = (status: 'success' | 'unsupported' | 'error') => {
+        useLogEvent({ feature: "PlantTimeRecommendation", status });
     }
 
     return (
