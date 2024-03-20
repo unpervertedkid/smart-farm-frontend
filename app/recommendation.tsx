@@ -14,7 +14,6 @@ import { CropRecommendationRequestInterface, PlantTimeRecommendationRequestInter
 import { CropRecommendationFormCard, CropRecommendationResultCard, PlantTimeRecommendationFormCard, PlantTimeRecommendationResultCard } from "@/components/ui/crop-recommendation"
 
 import { useLogEvent } from "@/hooks/useLogEvent";
-import { log } from "console"
 
 interface LocationData {
     longitude: number;
@@ -37,6 +36,9 @@ export default function CropRecommendation() {
     const [isLoading, setIsLoading] = React.useState(false);
     const { toast } = useToast();
     const warning = useWarning();
+
+    const logCropRecommendation = useLogEvent('CropRecommendation')
+    const logPlantTimeRecommendation = useLogEvent('PlantTimeRecommendation')
 
     useEffect(() => {
         const fetchCrops = async () => {
@@ -130,12 +132,7 @@ export default function CropRecommendation() {
 
         setIsLoading(false);
     };
-
-    const logCropRecommendation = (status: 'success' | 'unsupported' | 'error') => {
-        useLogEvent({ feature: "CropRecommendation", status });
-    }
-
-
+    
     const handleGetPlantTimeRecommendation = async () => {
         if (!location) {
             warning("location", "Location is required to get planting schedule", "Grant location access", handleLocationAccess);
@@ -186,10 +183,6 @@ export default function CropRecommendation() {
         }
 
         setIsLoading(false);
-    }
-
-    const logPlantTimeRecommendation = (status: 'success' | 'unsupported' | 'error') => {
-        useLogEvent({ feature: "PlantTimeRecommendation", status });
     }
 
     return (
