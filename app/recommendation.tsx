@@ -7,11 +7,13 @@ import {
 } from "@/components/ui/tabs"
 import { ToastAction } from "@/components/ui/toast"
 import { useToast } from "@/components/ui/use-toast"
-import React, { useEffect } from "react"
+import React, { use, useEffect } from "react"
 
 import { CropsResponseInterface, getCrops } from "@/api/cropAPI"
 import { CropRecommendationRequestInterface, PlantTimeRecommendationRequestInterface, getCropRecommendation, getPlantTimeRecommendation } from "@/api/recommendationAPI"
 import { CropRecommendationFormCard, CropRecommendationResultCard, PlantTimeRecommendationFormCard, PlantTimeRecommendationResultCard } from "@/components/ui/crop-recommendation"
+
+import { useLogEvent } from "@/hooks/useLogEvent";
 
 interface LocationData {
     longitude: number;
@@ -111,6 +113,7 @@ export default function CropRecommendation() {
             const recommendedCrops = response.crops.map(crop => crop.crop);
             setRecommendedCrops(recommendedCrops);
             setAreCropResultsReady(true);
+            useLogEvent({ feature: "CropRecommendation", status: "success" });
         } else {
             const errorMessage = response.errorMessage;
             toast(
@@ -121,6 +124,7 @@ export default function CropRecommendation() {
                 }
             )
             console.error(`Error: ${response.status}`);
+            useLogEvent({ feature: "CropRecommendation", status: "error" });
         }
 
         setIsLoading(false);
@@ -158,6 +162,7 @@ export default function CropRecommendation() {
             if (response.status === 200) {
                 setRecommendedPlantTime(response.dateRanges);
                 setArePlantTimeResultsReady(true);
+                useLogEvent({ feature: "PlantTimeRecommendation", status: "success" });
             } else {
                 const errorMessage = response.errorMessage;
                 toast(
@@ -167,6 +172,7 @@ export default function CropRecommendation() {
                         description: errorMessage || "An error occurred while fetching planting schedule",
                     }
                 )
+                useLogEvent({ feature: "PlantTimeRecommendation", status: "error" });
                 console.error(`Error: ${response.status}`);
             }
         } catch (error) {
