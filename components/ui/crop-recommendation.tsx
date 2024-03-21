@@ -21,7 +21,7 @@ interface CropRecommendationProps {
     setIsDrawerOpen: (isOpen: boolean) => void;
     setLocationStatus: (status: 'idle' | 'success' | 'error') => void;
     handleGetRecommendation: () => void;
-    isLoading: boolean;
+    recommendationStatus: 'idle' | 'pending' | 'success' | 'unsuported' | 'error';
     areTermsAndConditionsAccepted: boolean;
     onTermsAcceptChange: () => void;
 }
@@ -35,7 +35,7 @@ export const CropRecommendationFormCard: React.FC<CropRecommendationProps> = ({
     setIsDrawerOpen,
     setLocationStatus,
     handleGetRecommendation,
-    isLoading,
+    recommendationStatus,
     areTermsAndConditionsAccepted,
     onTermsAcceptChange,
 }) => {
@@ -74,16 +74,18 @@ export const CropRecommendationFormCard: React.FC<CropRecommendationProps> = ({
             <CardFooter className="flex flex-col items-start space-y-2">
                 <TermsAndConditions onAcceptChange={onTermsAcceptChange} areTermsAndConditionsAccepted={areTermsAndConditionsAccepted}/>
                 <div className="w-full">
-                    {isLoading ? (
-                        <Button disabled className="w-full px-5 py-3 mt-5">
-                            <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
-                            Please wait
-                        </Button>
-                    ) : (
-                        <Button variant="default" className="w-full px-5 py-3 mt-5" onClick={handleGetRecommendation}>
-                            Get Recommendation
-                        </Button>
-                    )}
+                    {
+                        recommendationStatus === "pending" ? (
+                            <Button disabled className="w-full px-5 py-3 mt-5">
+                                <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
+                                Please wait
+                            </Button>
+                        ) : recommendationStatus === "idle" ? (
+                            <Button variant="default" className="w-full px-5 py-3 mt-5" onClick={handleGetRecommendation}>
+                                Get Recommendation
+                            </Button>
+                        ) : null
+                    }
                 </div>
             </CardFooter>
         </Card>
@@ -131,7 +133,7 @@ interface PlantTimeRecommendationProps {
     setIsDrawerOpen: (isOpen: boolean) => void;
     setLocationStatus: (status: 'idle' | 'success' | 'error') => void;
     handleGetRecommendation: () => void;
-    isLoading: boolean;
+    recommendationStatus: 'idle' | 'pending' | 'success' | 'unsuported' | 'error';
     crops: string[];
     setSelectedCrop: React.Dispatch<React.SetStateAction<string| null>>;
     areTermsAndConditionsAccepted: boolean;
@@ -145,7 +147,7 @@ export const PlantTimeRecommendationFormCard: React.FC<PlantTimeRecommendationPr
     setIsDrawerOpen,
     setLocationStatus,
     handleGetRecommendation,
-    isLoading,
+    recommendationStatus,
     crops,
     setSelectedCrop,
     areTermsAndConditionsAccepted,
@@ -197,16 +199,18 @@ export const PlantTimeRecommendationFormCard: React.FC<PlantTimeRecommendationPr
             <CardFooter className="flex flex-col items-start space-y-2">
                 <TermsAndConditions onAcceptChange={onTermsAcceptChange} areTermsAndConditionsAccepted={areTermsAndConditionsAccepted} />
                 <div className="w-full">
-                    {isLoading ? (
-                        <Button disabled className="w-full px-5 py-3 mt-5">
-                            <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
-                            Please wait
-                        </Button>
-                    ) : (
-                        <Button variant="default" className="w-full px-5 py-3 mt-5" onClick={handleGetRecommendation}>
-                            Get Recommendation
-                        </Button>
-                    )}
+                    {
+                        recommendationStatus === "pending" ? (
+                            <Button disabled className="w-full px-5 py-3 mt-5">
+                                <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
+                                Please wait
+                            </Button>
+                        ) : recommendationStatus === "idle" ? (
+                            <Button variant="default" className="w-full px-5 py-3 mt-5" onClick={handleGetRecommendation}>
+                                Get Recommendation
+                            </Button>
+                        ) : null
+                    }
                 </div>
             </CardFooter>
         </Card>
