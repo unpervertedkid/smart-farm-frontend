@@ -10,8 +10,18 @@ import { useToast } from "@/components/ui/use-toast"
 import React, { useEffect } from "react"
 
 import { CropsResponseInterface, getCrops } from "@/api/cropAPI"
-import { CropRecommendationRequestInterface, PlantTimeRecommendationRequestInterface, getCropRecommendation, getPlantTimeRecommendation } from "@/api/recommendationAPI"
-import { CropRecommendationFormCard, CropRecommendationResultCard, PlantTimeRecommendationFormCard, PlantTimeRecommendationResultCard } from "@/components/ui/crop-recommendation"
+import {
+    CropRecommendationRequestInterface,
+    PlantTimeRecommendationRequestInterface,
+    getCropRecommendation,
+    getPlantTimeRecommendation
+} from "@/api/recommendationAPI"
+import {
+    CropRecommendationFormCard,
+    CropRecommendationResultCard,
+    PlantTimeRecommendationFormCard,
+    PlantTimeRecommendationResultCard
+} from "@/components/ui/crop-recommendation"
 
 interface LocationData {
     longitude: number;
@@ -112,6 +122,8 @@ export default function CropRecommendation() {
             setRecommendedCrops(recommendedCrops);
             setAreCropResultsReady(true);
             setCropRecommendationStatus('success');
+        } else if (response.status === 404) {
+            setCropRecommendationStatus('unsuported');
         } else {
             const errorMessage = response.errorMessage;
             toast(
@@ -119,6 +131,7 @@ export default function CropRecommendation() {
                     variant: "destructive",
                     title: "Uh oh! Something went wrong.",
                     description: errorMessage || "An error occurred while fetching crop recommendations",
+                    action: <ToastAction onClick={() => handleGetCropRecommendation()} altText="Try again">Try again</ToastAction>,
                 }
             )
             console.error(`Error: ${response.status}`);
@@ -158,6 +171,8 @@ export default function CropRecommendation() {
             if (response.status === 200) {
                 setRecommendedPlantTime(response.dateRanges);
                 setPlantTimeRecommendationStatus('success');
+            } else if (response.status === 404) {
+                setPlantTimeRecommendationStatus('unsuported');
             } else {
                 const errorMessage = response.errorMessage;
                 toast(
@@ -165,6 +180,7 @@ export default function CropRecommendation() {
                         variant: "destructive",
                         title: "Uh oh! Something went wrong.",
                         description: errorMessage || "An error occurred while fetching planting schedule",
+                        action: <ToastAction onClick={() => handleGetPlantTimeRecommendation()} altText="Try again">Try again</ToastAction>,
                     }
                 )
                 console.error(`Error: ${response.status}`);

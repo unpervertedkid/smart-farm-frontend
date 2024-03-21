@@ -4,6 +4,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import CropCarousel from "@/components/ui/crop-carousel";
 import DateDisplay from "@/components/ui/date-display";
 import DatePickerWithPresets from "@/components/ui/datepicker";
+import { RecommendationErrorAlert } from "@/components/ui/errors";
 import InfoPopover from "@/components/ui/info-popover";
 import { Label } from "@/components/ui/label";
 import LocationDrawer from "@/components/ui/location-drawer";
@@ -40,55 +41,76 @@ export const CropRecommendationFormCard: React.FC<CropRecommendationProps> = ({
     onTermsAcceptChange,
 }) => {
     return (
-        <Card>
-            <CardHeader>
-                <CardTitle>Crop Recommendation</CardTitle>
-                <CardDescription>
-                    Get recommendations on what crops to plant given your locations weather and soil conditions.
-                </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-2">
-                <div className="space-y-1 flex items-center">
-                    <Label htmlFor="location">Location</Label>
-                    <InfoPopover
-                        message="We use your location to get the weather and soil information to make the best crop recommendation for you."
-                        popoverContentClass="p-2 text-sm text-gray-500"
-                        side="top"
-                    />
-                </div>
-                <div className="space-y-1">
-                    <LocationDrawer locationStatus={locationStatus} handleLocationAccess={handleLocationAccess} isDrawerOpen={isDrawerOpen} setIsDrawerOpen={setIsDrawerOpen} setLocationStatus={setLocationStatus} />
-                </div>
-                <div className="space-y-1 flex items-center">
-                    <Label htmlFor="plant-date">Plant Date</Label>
-                    <InfoPopover
-                        message="The date you plan to plant the crop. We use this to get the best crop recommendation for you."
-                        popoverContentClass="p-2 text-sm text-gray-500"
-                        side="top"
-                    />
-                </div>
-                <div className="space-y-1">
-                    <DatePickerWithPresets date={date} setDate={setDate} />
-                </div>
-            </CardContent>
-            <CardFooter className="flex flex-col items-start space-y-2">
-                <TermsAndConditions onAcceptChange={onTermsAcceptChange} areTermsAndConditionsAccepted={areTermsAndConditionsAccepted}/>
-                <div className="w-full">
-                    {
-                        recommendationStatus === "pending" ? (
-                            <Button disabled className="w-full px-5 py-3 mt-5">
-                                <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
-                                Please wait
-                            </Button>
-                        ) : recommendationStatus === "idle" ? (
-                            <Button variant="default" className="w-full px-5 py-3 mt-5" onClick={handleGetRecommendation}>
-                                Get Recommendation
-                            </Button>
-                        ) : null
-                    }
-                </div>
-            </CardFooter>
-        </Card>
+        <div>
+            <div>
+                <Card>
+                    <CardHeader>
+                        <CardTitle>Crop Recommendation</CardTitle>
+                        <CardDescription>
+                            Get recommendations on what crops to plant given your locations weather and soil conditions.
+                        </CardDescription>
+                    </CardHeader>
+                    <CardContent className="space-y-2">
+                        <div className="space-y-1 flex items-center">
+                            <Label htmlFor="location">Location</Label>
+                            <InfoPopover
+                                message="We use your location to get the weather and soil information to make the best crop recommendation for you."
+                                popoverContentClass="p-2 text-sm text-gray-500"
+                                side="top"
+                            />
+                        </div>
+                        <div className="space-y-1">
+                            <LocationDrawer locationStatus={locationStatus} handleLocationAccess={handleLocationAccess} isDrawerOpen={isDrawerOpen} setIsDrawerOpen={setIsDrawerOpen} setLocationStatus={setLocationStatus} />
+                        </div>
+                        <div className="space-y-1 flex items-center">
+                            <Label htmlFor="plant-date">Plant Date</Label>
+                            <InfoPopover
+                                message="The date you plan to plant the crop. We use this to get the best crop recommendation for you."
+                                popoverContentClass="p-2 text-sm text-gray-500"
+                                side="top"
+                            />
+                        </div>
+                        <div className="space-y-1">
+                            <DatePickerWithPresets date={date} setDate={setDate} />
+                        </div>
+                    </CardContent>
+                    <CardFooter className="flex flex-col items-start space-y-2">
+                        <TermsAndConditions onAcceptChange={onTermsAcceptChange} areTermsAndConditionsAccepted={areTermsAndConditionsAccepted} />
+                        <div className="w-full">
+                            {
+                                recommendationStatus === "pending" ? (
+                                    <Button disabled className="w-full px-5 py-3 mt-5">
+                                        <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
+                                        Please wait
+                                    </Button>
+                                ) : recommendationStatus === "idle" ? (
+                                    <Button variant="default" className="w-full px-5 py-3 mt-5" onClick={handleGetRecommendation}>
+                                        Get Recommendation
+                                    </Button>
+                                ) : recommendationStatus === "error" ? (
+                                    <Button disabled className="w-full px-5 py-3 mt-5">
+                                        Location not supported
+                                    </Button>
+                                ) : null
+                            }
+                        </div>
+                    </CardFooter>
+                </Card>
+            </div>
+            <div>
+                {
+                    recommendationStatus == "error" ? (
+                        <RecommendationErrorAlert
+                            show={recommendationStatus == "error"}
+                            title="Location not supported"
+                            description="We currently do not support crop recommendation for your location.
+                                        If you would like to see this feature in the future, please let us know."
+                        />
+                    ) : null
+                }
+            </div>
+        </div>
+
     );
 };
 
@@ -135,7 +157,7 @@ interface PlantTimeRecommendationProps {
     handleGetRecommendation: () => void;
     recommendationStatus: 'idle' | 'pending' | 'success' | 'unsuported' | 'error';
     crops: string[];
-    setSelectedCrop: React.Dispatch<React.SetStateAction<string| null>>;
+    setSelectedCrop: React.Dispatch<React.SetStateAction<string | null>>;
     areTermsAndConditionsAccepted: boolean;
     onTermsAcceptChange: () => void;
 }
@@ -154,66 +176,87 @@ export const PlantTimeRecommendationFormCard: React.FC<PlantTimeRecommendationPr
     onTermsAcceptChange,
 }) => {
     return (
-        <Card>
-            <CardHeader>
-                <CardTitle>Plant Time Recommendation</CardTitle>
-                <CardDescription>
-                    Get a prediction of the best time to plant a certain crop based on past trends.
-                </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-2">
-                <div className="space-y-1 flex items-center">
-                    <Label htmlFor="location">Location</Label>
-                    <InfoPopover
-                        message="We use your location to get the weather and soil information to make the best crop recommendation for you."
-                        popoverContentClass="p-2 text-sm text-gray-500"
-                        side="top"
-                    />
-                </div>
-                <div className="space-y-1">
-                    <LocationDrawer locationStatus={locationStatus} handleLocationAccess={handleLocationAccess} isDrawerOpen={isDrawerOpen} setIsDrawerOpen={setIsDrawerOpen} setLocationStatus={setLocationStatus} />
-                </div>
-                <div className="space-y-1">
-                    <div className="space-y-1 flex items-center">
-                        <Label htmlFor="crop">Crop</Label>
-                        <InfoPopover
-                            message="The crop for which you want to get the best time to plant."
-                            popoverContentClass="p-2 text-sm text-gray-500"
-                            side="top"
+        <div>
+            <div>
+                <Card>
+                    <CardHeader>
+                        <CardTitle>Plant Time Recommendation</CardTitle>
+                        <CardDescription>
+                            Get a prediction of the best time to plant a certain crop based on past trends.
+                        </CardDescription>
+                    </CardHeader>
+                    <CardContent className="space-y-2">
+                        <div className="space-y-1 flex items-center">
+                            <Label htmlFor="location">Location</Label>
+                            <InfoPopover
+                                message="We use your location to get the weather and soil information to make the best crop recommendation for you."
+                                popoverContentClass="p-2 text-sm text-gray-500"
+                                side="top"
+                            />
+                        </div>
+                        <div className="space-y-1">
+                            <LocationDrawer locationStatus={locationStatus} handleLocationAccess={handleLocationAccess} isDrawerOpen={isDrawerOpen} setIsDrawerOpen={setIsDrawerOpen} setLocationStatus={setLocationStatus} />
+                        </div>
+                        <div className="space-y-1">
+                            <div className="space-y-1 flex items-center">
+                                <Label htmlFor="crop">Crop</Label>
+                                <InfoPopover
+                                    message="The crop for which you want to get the best time to plant."
+                                    popoverContentClass="p-2 text-sm text-gray-500"
+                                    side="top"
+                                />
+                            </div>
+                            <Select onValueChange={value => setSelectedCrop(value)}>
+                                <SelectTrigger className="w-[180px]">
+                                    <SelectValue placeholder="Select a crop" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    {crops.map((crop) => (
+                                        <SelectItem key={crop} value={crop}>
+                                            {crop.toUpperCase()}
+                                        </SelectItem>
+                                    ))}
+                                </SelectContent>
+                            </Select>
+                        </div>
+                    </CardContent>
+                    <CardFooter className="flex flex-col items-start space-y-2">
+                        <TermsAndConditions onAcceptChange={onTermsAcceptChange} areTermsAndConditionsAccepted={areTermsAndConditionsAccepted} />
+                        <div className="w-full">
+                            {
+                                recommendationStatus === "pending" ? (
+                                    <Button disabled className="w-full px-5 py-3 mt-5">
+                                        <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
+                                        Please wait
+                                    </Button>
+                                ) : recommendationStatus === "idle" ? (
+                                    <Button variant="default" className="w-full px-5 py-3 mt-5" onClick={handleGetRecommendation}>
+                                        Get Recommendation
+                                    </Button>
+                                ) : recommendationStatus === "error" ? (
+                                    <Button disabled className="w-full px-5 py-3 mt-5">
+                                        Location not supported
+                                    </Button>
+                                ) : null
+                            }
+                        </div>
+                    </CardFooter>
+                </Card>
+            </div>
+            <div>
+                {
+                    recommendationStatus == "error" ? (
+                        <RecommendationErrorAlert
+                            show={recommendationStatus == "error"}
+                            title="Location not supported"
+                            description="We currently do not support plant time recommendation for your location.
+                                        If you would like to see this feature in the future, please let us know."
                         />
-                    </div>
-                    <Select onValueChange={value => setSelectedCrop(value)}>
-                        <SelectTrigger className="w-[180px]">
-                            <SelectValue placeholder="Select a crop" />
-                        </SelectTrigger>
-                        <SelectContent>
-                            {crops.map((crop) => (
-                                <SelectItem key={crop} value={crop}>
-                                    {crop.toUpperCase()}
-                                </SelectItem>
-                            ))}
-                        </SelectContent>
-                    </Select>
-                </div>
-            </CardContent>
-            <CardFooter className="flex flex-col items-start space-y-2">
-                <TermsAndConditions onAcceptChange={onTermsAcceptChange} areTermsAndConditionsAccepted={areTermsAndConditionsAccepted} />
-                <div className="w-full">
-                    {
-                        recommendationStatus === "pending" ? (
-                            <Button disabled className="w-full px-5 py-3 mt-5">
-                                <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
-                                Please wait
-                            </Button>
-                        ) : recommendationStatus === "idle" ? (
-                            <Button variant="default" className="w-full px-5 py-3 mt-5" onClick={handleGetRecommendation}>
-                                Get Recommendation
-                            </Button>
-                        ) : null
-                    }
-                </div>
-            </CardFooter>
-        </Card>
+                    ) : null
+                }
+            </div>
+        </div>
+
     );
 };
 
