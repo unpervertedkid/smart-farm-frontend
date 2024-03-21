@@ -10,8 +10,18 @@ import { useToast } from "@/components/ui/use-toast"
 import React, { useEffect } from "react"
 
 import { CropsResponseInterface, getCrops } from "@/api/cropAPI"
-import { CropRecommendationRequestInterface, PlantTimeRecommendationRequestInterface, getCropRecommendation, getPlantTimeRecommendation } from "@/api/recommendationAPI"
-import { CropRecommendationFormCard, CropRecommendationResultCard, PlantTimeRecommendationFormCard, PlantTimeRecommendationResultCard } from "@/components/ui/crop-recommendation"
+import {
+    CropRecommendationRequestInterface,
+    PlantTimeRecommendationRequestInterface,
+    getCropRecommendation,
+    getPlantTimeRecommendation
+} from "@/api/recommendationAPI"
+import {
+    CropRecommendationFormCard,
+    CropRecommendationResultCard,
+    PlantTimeRecommendationFormCard,
+    PlantTimeRecommendationResultCard
+} from "@/components/ui/crop-recommendation"
 
 interface LocationData {
     longitude: number;
@@ -28,10 +38,10 @@ export default function CropRecommendation() {
     const [selectedCrop, setSelectedCrop] = React.useState<string | null>(null);
     const [areCropResultsReady, setAreCropResultsReady] = React.useState(false);
     const [recommendedCrops, setRecommendedCrops] = React.useState<string[]>([]);
-    const [arePlantTimeResultsReady, setArePlantTimeResultsReady] = React.useState(false);
     const [recommendedPlantTime, setRecommendedPlantTime] = React.useState<{ startDate: Date; endDate: Date }[] | null>(null);
+    const [cropRecommendationStatus, setCropRecommendationStatus] = React.useState<'idle' | 'pending' | 'success' | 'unsuported' | 'error'>('idle');
+    const [plantTimeRecommendationStatus, setPlantTimeRecommendationStatus] = React.useState<'idle' | 'pending' | 'success' | 'unsuported' | 'error'>('idle');
 
-    const [isLoading, setIsLoading] = React.useState(false);
     const { toast } = useToast();
     const warning = useWarning();
 
@@ -95,7 +105,7 @@ export default function CropRecommendation() {
             return;
         }
 
-        setIsLoading(true);
+        setCropRecommendationStatus('pending');
 
         const request: CropRecommendationRequestInterface = {
             location: {
@@ -111,6 +121,9 @@ export default function CropRecommendation() {
             const recommendedCrops = response.crops.map(crop => crop.crop);
             setRecommendedCrops(recommendedCrops);
             setAreCropResultsReady(true);
+            setCropRecommendationStatus('success');
+        } else if (response.status === 404) {
+            setCropRecommendationStatus('unsuported');
         } else {
             const errorMessage = response.errorMessage;
             toast(
@@ -118,12 +131,12 @@ export default function CropRecommendation() {
                     variant: "destructive",
                     title: "Uh oh! Something went wrong.",
                     description: errorMessage || "An error occurred while fetching crop recommendations",
+                    action: <ToastAction onClick={() => handleGetCropRecommendation()} altText="Try again">Try again</ToastAction>,
                 }
             )
             console.error(`Error: ${response.status}`);
+            setCropRecommendationStatus('error');
         }
-
-        setIsLoading(false);
     };
 
     const handleGetPlantTimeRecommendation = async () => {
@@ -142,7 +155,7 @@ export default function CropRecommendation() {
             return;
         }
 
-        setIsLoading(true);
+        setPlantTimeRecommendationStatus('pending');
 
         const request: PlantTimeRecommendationRequestInterface = {
             location: {
@@ -157,7 +170,9 @@ export default function CropRecommendation() {
 
             if (response.status === 200) {
                 setRecommendedPlantTime(response.dateRanges);
-                setArePlantTimeResultsReady(true);
+                setPlantTimeRecommendationStatus('success');
+            } else if (response.status === 404) {
+                setPlantTimeRecommendationStatus('unsuported');
             } else {
                 const errorMessage = response.errorMessage;
                 toast(
@@ -165,15 +180,16 @@ export default function CropRecommendation() {
                         variant: "destructive",
                         title: "Uh oh! Something went wrong.",
                         description: errorMessage || "An error occurred while fetching planting schedule",
+                        action: <ToastAction onClick={() => handleGetPlantTimeRecommendation()} altText="Try again">Try again</ToastAction>,
                     }
                 )
                 console.error(`Error: ${response.status}`);
+                setPlantTimeRecommendationStatus('error');
             }
         } catch (error) {
             console.error(error);
+            setPlantTimeRecommendationStatus('error');
         }
-
-        setIsLoading(false);
     }
 
     return (
@@ -185,10 +201,10 @@ export default function CropRecommendation() {
                 </TabsList>
                 <TabsContent value="crop-recommendation">
                     {
-                        areCropResultsReady ? (
+                        cropRecommendationStatus == 'success' ? (
                             <CropRecommendationResultCard
                                 recommendedCrops={recommendedCrops}
-                                resetRecommendation={() => setAreCropResultsReady(false)}
+                                resetRecommendation={() => setCropRecommendationStatus('idle')}
                             />
                         ) : (<CropRecommendationFormCard
                             date={date} setDate={setDate}
@@ -198,7 +214,7 @@ export default function CropRecommendation() {
                             setIsDrawerOpen={setIsDrawerOpen}
                             setLocationStatus={setLocationStatus}
                             handleGetRecommendation={handleGetCropRecommendation}
-                            isLoading={isLoading}
+                            recommendationStatus={cropRecommendationStatus}
                             onTermsAcceptChange={() => setTermsAndConditions(!areTermsAndConditionsAccepted)}
                             areTermsAndConditionsAccepted={areTermsAndConditionsAccepted}
                         />)
@@ -206,11 +222,10 @@ export default function CropRecommendation() {
                 </TabsContent>
                 <TabsContent value="plant-time">
                     {
-                        arePlantTimeResultsReady ?
+                        plantTimeRecommendationStatus == 'success' ?
                             (<PlantTimeRecommendationResultCard
                                 recommendedPlantTime={recommendedPlantTime}
-                                resetRecommendation={() =>
-                                    setArePlantTimeResultsReady(false)}
+                                resetRecommendation={() => setPlantTimeRecommendationStatus('idle')}
                             />) :
                             (<PlantTimeRecommendationFormCard
                                 locationStatus={locationStatus}
@@ -219,7 +234,8 @@ export default function CropRecommendation() {
                                 setIsDrawerOpen={setIsDrawerOpen}
                                 setLocationStatus={setLocationStatus}
                                 handleGetRecommendation={handleGetPlantTimeRecommendation}
-                                isLoading={isLoading} crops={crops}
+                                recommendationStatus={plantTimeRecommendationStatus}
+                                crops={crops}
                                 setSelectedCrop={setSelectedCrop}
                                 onTermsAcceptChange={() => setTermsAndConditions(!areTermsAndConditionsAccepted)}
                                 areTermsAndConditionsAccepted={areTermsAndConditionsAccepted}
