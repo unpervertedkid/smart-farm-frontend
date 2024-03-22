@@ -36,7 +36,6 @@ export default function CropRecommendation() {
     const [locationStatus, setLocationStatus] = React.useState<'idle' | 'success' | 'error'>('idle');
     const [crops, setCrops] = React.useState<string[]>([]);
     const [selectedCrop, setSelectedCrop] = React.useState<string | null>(null);
-    const [areCropResultsReady, setAreCropResultsReady] = React.useState(false);
     const [recommendedCrops, setRecommendedCrops] = React.useState<string[]>([]);
     const [recommendedPlantTime, setRecommendedPlantTime] = React.useState<{ startDate: Date; endDate: Date }[] | null>(null);
     const [cropRecommendationStatus, setCropRecommendationStatus] = React.useState<'idle' | 'pending' | 'success' | 'unsuported' | 'error'>('idle');
@@ -120,7 +119,6 @@ export default function CropRecommendation() {
         if (response.status === 200) {
             const recommendedCrops = response.crops.map(crop => crop.crop);
             setRecommendedCrops(recommendedCrops);
-            setAreCropResultsReady(true);
             setCropRecommendationStatus('success');
         } else if (response.status === 404) {
             setCropRecommendationStatus('unsuported');

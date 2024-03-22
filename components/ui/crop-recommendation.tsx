@@ -87,9 +87,13 @@ export const CropRecommendationFormCard: React.FC<CropRecommendationProps> = ({
                                     <Button variant="default" className="w-full px-5 py-3 mt-5" onClick={handleGetRecommendation}>
                                         Get Recommendation
                                     </Button>
-                                ) : recommendationStatus === "error" ? (
+                                ) : recommendationStatus === "unsuported" ? (
                                     <Button disabled className="w-full px-5 py-3 mt-5">
                                         Location not supported
+                                    </Button>
+                                ) : recommendationStatus === "error" ? (
+                                    <Button variant="destructive" className="w-full px-5 py-3 mt-5" onClick={handleGetRecommendation}>
+                                        Retry Getting Recommendation
                                     </Button>
                                 ) : null
                             }
@@ -99,9 +103,9 @@ export const CropRecommendationFormCard: React.FC<CropRecommendationProps> = ({
             </div>
             <div>
                 {
-                    recommendationStatus == "error" ? (
+                    recommendationStatus == "unsuported" ? (
                         <RecommendationErrorAlert
-                            show={recommendationStatus == "error"}
+                            show={recommendationStatus == "unsuported"}
                             title="Location not supported"
                             description="We currently do not support crop recommendation for your location.
                                         If you would like to see this feature in the future, please let us know."
@@ -233,9 +237,13 @@ export const PlantTimeRecommendationFormCard: React.FC<PlantTimeRecommendationPr
                                     <Button variant="default" className="w-full px-5 py-3 mt-5" onClick={handleGetRecommendation}>
                                         Get Recommendation
                                     </Button>
-                                ) : recommendationStatus === "error" ? (
+                                ) : recommendationStatus === "unsuported" ? (
                                     <Button disabled className="w-full px-5 py-3 mt-5">
                                         Location not supported
+                                    </Button>
+                                ) : recommendationStatus === "error" ? (
+                                    <Button variant="destructive" className="w-full px-5 py-3 mt-5" onClick={handleGetRecommendation}>
+                                        Retry Getting Recommendation
                                     </Button>
                                 ) : null
                             }
@@ -245,9 +253,9 @@ export const PlantTimeRecommendationFormCard: React.FC<PlantTimeRecommendationPr
             </div>
             <div>
                 {
-                    recommendationStatus == "error" ? (
+                    recommendationStatus == "unsuported" ? (
                         <RecommendationErrorAlert
-                            show={recommendationStatus == "error"}
+                            show={recommendationStatus == "unsuported"}
                             title="Location not supported"
                             description="We currently do not support plant time recommendation for your location.
                                         If you would like to see this feature in the future, please let us know."
