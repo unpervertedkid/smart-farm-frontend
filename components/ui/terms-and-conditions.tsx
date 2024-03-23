@@ -1,5 +1,6 @@
 import { Checkbox } from "@/components/ui/checkbox";
-import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { InfoCircledIcon } from "@radix-ui/react-icons";
 import React from "react";
 
 interface TermsAndConditionsProps {
@@ -13,16 +14,20 @@ export const TermsAndConditions: React.FC<TermsAndConditionsProps> = ({
 }) => {
     return (
         <div className="flex items-center space-x-2 mb-5">
-            <Checkbox id="terms" onCheckedChange={onAcceptChange} checked={areTermsAndConditionsAccepted}/>
+            <Checkbox id="terms" onCheckedChange={onAcceptChange} checked={areTermsAndConditionsAccepted} />
             <label
                 htmlFor="terms"
-                className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                className="flex items-center text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
             >
-                <HoverCard>
-                    <HoverCardTrigger asChild>
-                        <span>Accept <span className="underline">Terms and Conditions</span></span>
-                    </HoverCardTrigger>
-                    <HoverCardContent className="w-full sm:w-1/2 px-4">
+                <span>Accept</span>
+                <Popover>
+                    <PopoverTrigger asChild>
+                        <button className="ml-2 flex items-center">
+                            <span className="underline">Terms and Conditions</span>
+                            <InfoCircledIcon className="w-4 h-4 text-gray-500" style={{ paddingLeft: '2px' }} />
+                        </button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-full sm:w-1/2 px-4 max-w-full">
                         <div className="space-y-1">
                             <h4 className="text-sm font-semibold">Terms and Conditions</h4>
                             <ol className="list-decimal list-inside text-sm">
@@ -37,8 +42,8 @@ export const TermsAndConditions: React.FC<TermsAndConditionsProps> = ({
                                 By using our service, you acknowledge that you have read and understood these terms and conditions and agree to be bound by them.
                             </p>
                         </div>
-                    </HoverCardContent>
-                </HoverCard>
+                    </PopoverContent>
+                </Popover>
             </label>
         </div>
     );
