@@ -61,31 +61,35 @@ export default function CropRecommendation() {
         fetchCrops();
     }, []);
 
-    const handleLocationAccess = () => {
-        navigator.geolocation.getCurrentPosition(
-            (position) => {
-                setLocation({
-                    longitude: position.coords.longitude,
-                    latitude: position.coords.latitude,
-                });
-                setIsDrawerOpen(false);
-                setLocationStatus('success');
-                toast({
-                    description: "Location acquired successfully",
-                });
-            },
-            (error) => {
-                setIsDrawerOpen(false);
-                setLocationStatus('error');
-                console.error(error);
-                toast({
-                    variant: "destructive",
-                    title: "Uh oh! Something went wrong.",
-                    description: "We could not access your location. Kindly allow location access on your browser to continue.",
-                    action: <ToastAction onClick={handleLocationAccess} altText="Try again">Try again</ToastAction>,
-                });
-            }
-        );
+    const handleLocationAccess = (): Promise<boolean> => {
+        return new Promise((resolve, reject) => {
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    setLocation({
+                        longitude: position.coords.longitude,
+                        latitude: position.coords.latitude,
+                    });
+                    setIsDrawerOpen(false);
+                    setLocationStatus('success');
+                    toast({
+                        description: "Location acquired successfully",
+                    });
+                    resolve(true);
+                },
+                (error) => {
+                    setIsDrawerOpen(false);
+                    setLocationStatus('error');
+                    console.error(error);
+                    toast({
+                        variant: "destructive",
+                        title: "Uh oh! Something went wrong.",
+                        description: "We could not access your location. Kindly allow location access on your browser to continue.",
+                        action: <ToastAction onClick={() => {setIsDrawerOpen(true)}} altText="Try again">Try again</ToastAction>,
+                    });
+                    resolve(false);
+                }
+            );
+        });
     };
 
     const handleGetCropRecommendation = async () => {
