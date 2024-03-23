@@ -35,7 +35,7 @@ export const TermsAndConditions: React.FC<TermsAndConditionsProps> = ({
                             <InfoCircledIcon className="w-4 h-4 text-gray-500" style={{ paddingLeft: '2px' }} />
                         </button>
                     </PopoverTrigger>
-                    <PopoverContent side="top" className="h-screen sm:h-auto sm:w-3/4 md:w-1/2 lg:w-1/2 xl:w-1/2">
+                    <PopoverContent className="h-screen sm:h-auto sm:w-3/4 md:w-1/2 lg:w-1/2 xl:w-1/2">
                         <Card>
                             <CardHeader>
                                 <CardTitle>Terms and Conditions</CardTitle>
