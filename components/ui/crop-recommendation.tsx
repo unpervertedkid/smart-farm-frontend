@@ -17,7 +17,7 @@ interface CropRecommendationProps {
     date: Date | undefined;
     setDate: React.Dispatch<React.SetStateAction<Date | undefined>>;
     locationStatus: 'idle' | 'success' | 'error';
-    handleLocationAccess: () => void;
+    handleLocationAccess: () => Promise<boolean>;
     isDrawerOpen: boolean;
     setIsDrawerOpen: (isOpen: boolean) => void;
     setLocationStatus: (status: 'idle' | 'success' | 'error') => void;
@@ -154,7 +154,7 @@ export const CropRecommendationResultCard: React.FC<CropRecommendationResultsPro
 
 interface PlantTimeRecommendationProps {
     locationStatus: 'idle' | 'success' | 'error';
-    handleLocationAccess: () => void;
+    handleLocationAccess: () => Promise<boolean>;
     isDrawerOpen: boolean;
     setIsDrawerOpen: (isOpen: boolean) => void;
     setLocationStatus: (status: 'idle' | 'success' | 'error') => void;
