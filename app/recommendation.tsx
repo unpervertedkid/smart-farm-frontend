@@ -84,7 +84,7 @@ export default function CropRecommendation() {
                         variant: "destructive",
                         title: "Uh oh! Something went wrong.",
                         description: "We could not access your location. Kindly allow location access on your browser to continue.",
-                        action: <ToastAction onClick={() => {setIsDrawerOpen(true)}} altText="Try again">Try again</ToastAction>,
+                        action: <ToastAction onClick={() => { setIsDrawerOpen(true) }} altText="Try again">Try again</ToastAction>,
                     });
                     resolve(false);
                 }
@@ -226,6 +226,7 @@ export default function CropRecommendation() {
                     {
                         plantTimeRecommendationStatus == 'success' ?
                             (<PlantTimeRecommendationResultCard
+                                crop={selectedCrop}
                                 recommendedPlantTime={recommendedPlantTime}
                                 resetRecommendation={() => setPlantTimeRecommendationStatus('idle')}
                             />) :

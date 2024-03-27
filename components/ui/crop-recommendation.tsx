@@ -10,6 +10,7 @@ import { Label } from "@/components/ui/label";
 import LocationDrawer from "@/components/ui/location-drawer";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { TermsAndConditions } from "@/components/ui/terms-and-conditions";
+import { toTitleCase } from "@/lib/utils";
 import { ExclamationTriangleIcon, ReloadIcon } from "@radix-ui/react-icons";
 import React from "react";
 
@@ -269,20 +270,25 @@ export const PlantTimeRecommendationFormCard: React.FC<PlantTimeRecommendationPr
 };
 
 interface PlantTimeRecommendationResultsProps {
+    crop: string | null;
     recommendedPlantTime: { startDate: Date; endDate: Date }[] | null;
     resetRecommendation: () => void;
 }
 
 export const PlantTimeRecommendationResultCard: React.FC<PlantTimeRecommendationResultsProps> = ({
+    crop,
     recommendedPlantTime,
     resetRecommendation,
 }) => {
     return (
         <Card>
             <CardHeader>
-                <CardTitle>Plant Time Recommendation</CardTitle>
+                <CardTitle>{crop ? `${toTitleCase(crop)} Plant Time Recommendation` : 'Plant Time Recommendation'}</CardTitle>
                 <CardDescription>
-                    Here are the optimal planting times for your selected crop, tailored specifically to your location.
+                    {crop
+                        ? `Here are the optimal planting times for ${toTitleCase(crop)}, tailored specifically to your location.`
+                        : "Here are the optimal planting times for your selected crop, tailored specifically to your location."
+                    }
                 </CardDescription>
             </CardHeader>
             <CardContent className="space-y-2">
