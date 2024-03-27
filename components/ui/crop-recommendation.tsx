@@ -218,7 +218,7 @@ export const PlantTimeRecommendationFormCard: React.FC<PlantTimeRecommendationPr
                                 <SelectContent>
                                     {crops.map((crop) => (
                                         <SelectItem key={crop} value={crop}>
-                                            {crop.toUpperCase()}
+                                            {toTitleCase(crop)}
                                         </SelectItem>
                                     ))}
                                 </SelectContent>
