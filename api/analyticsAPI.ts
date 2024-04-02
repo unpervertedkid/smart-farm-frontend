@@ -34,7 +34,7 @@ export async function getAnalytics(): Promise<AnalyticsResponseInterface[]> {
     let analytics: AnalyticsResponseInterface[] = [];
     if (response.ok) {
         const data = await response.json();
-        analytics = data.analytics.rows.map(row => ({
+        analytics = data.analytics.rows.map((row: { request_time: string | number | Date; feature: any; request_status: any; error_reason: string; }) => ({
             requestTime: new Date(row.request_time),
             feature: row.feature,
             requestStatus: row.request_status,
