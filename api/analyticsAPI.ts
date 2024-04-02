@@ -25,7 +25,7 @@ export interface AnalyticsResponseInterface {
     feature: "Crop Recommendation" | "Plant Time Recommendation";
     requestStatus: "success" | "error";
     errorReason?: "unsupported" | "client-error" | "server-error";
-    }
+}
 
 export async function getAnalytics(): Promise<AnalyticsResponseInterface[]> {
     const response = await fetch("api/get-analytics");
@@ -36,9 +36,9 @@ export async function getAnalytics(): Promise<AnalyticsResponseInterface[]> {
         const data = await response.json();
         analytics = data.analytics.rows.map((row: { request_time: string | number | Date; feature: any; request_status: any; error_reason: string; }) => ({
             requestTime: new Date(row.request_time),
-            feature: row.feature,
-            requestStatus: row.request_status,
-            errorReason: row.error_reason !== "undefined" ? row.error_reason : undefined,
+            feature: row.feature as "Crop Recommendation" | "Plant Time Recommendation",
+            requestStatus: row.request_status as "success" | "error",
+            errorReason: row.error_reason !== "undefined" ? row.error_reason as "unsupported" | "client-error" | "server-error" : undefined,
         }));
     }
 
