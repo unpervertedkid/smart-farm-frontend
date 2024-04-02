@@ -1,5 +1,4 @@
 import { ThemeProvider } from "@/components/theme-provider";
-import Navbar from "@/components/ui/navbar";
 import { Toaster } from "@/components/ui/toaster";
 import { Analytics } from '@vercel/analytics/react';
 import type { Metadata } from "next";
@@ -27,7 +26,6 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <Navbar />
           <main>{children}</main>
           <Toaster />
           <Analytics />
