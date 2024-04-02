@@ -22,7 +22,7 @@ import {
     Leaf
 } from "lucide-react"
 import { LineChartHero } from "@/components/chart"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 const recommendations = [
     {
         feature: "Crop recommendation",
@@ -52,13 +52,15 @@ export function Analytics() {
     const [analyticsStatus, setAnalyticsStatus] = useState<AnalyticsStatus>("Loading");
     const [analyticsData, setAnalyticsData] = useState<AnalyticsResponseInterface[]>([]);
 
-    getAnalytics().then((data) => {
-        setAnalyticsData(data);
-        setAnalyticsStatus("Success");
-    }).catch(() => {
-        setAnalyticsStatus("Error");
-    });
-    
+    useEffect(() => {
+        getAnalytics().then((data) => {
+            setAnalyticsData(data);
+            setAnalyticsStatus("Success");
+        }).catch(() => {
+            setAnalyticsStatus("Error");
+        });
+    }, []); // empty dependency array
+
     return (
         <div>
             <main className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-8">
