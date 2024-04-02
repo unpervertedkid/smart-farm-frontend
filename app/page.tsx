@@ -6,21 +6,21 @@ import CropRecommendation from "./recommendation";
 
 export default function Home() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [isLoginDialogOpen, setLoginDialogOpen] = useState(false);
+  const [isAuthenticationDialogOpen, setAuthenticationDialog] = useState(false);
 
   const handleLogin = () => {
-    setLoginDialogOpen(true);
+    setAuthenticationDialog(true);
   }
 
   const handleLogout = () => {
-    console.log("Logging out");
+    setAuthenticationDialog(true);
   }
 
   return (
     <div>
       <Navbar isLoggedIn={isLoggedIn} onLogin={handleLogin} onLogout={handleLogout} />
       <CropRecommendation />
-      <AuthenticationDialog open={isLoginDialogOpen} setOpen={setLoginDialogOpen} />
+      <AuthenticationDialog open={isAuthenticationDialogOpen} setOpen={setAuthenticationDialog} isLoggedIn={isLoggedIn} />
     </div>
   )
 }
