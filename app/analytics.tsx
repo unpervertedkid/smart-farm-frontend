@@ -55,6 +55,7 @@ export function Analytics() {
     useEffect(() => {
         getAnalytics().then((data) => {
             setAnalyticsData(data);
+            console.log(analyticsData);
             setAnalyticsStatus("Success");
         }).catch(() => {
             setAnalyticsStatus("Error");
