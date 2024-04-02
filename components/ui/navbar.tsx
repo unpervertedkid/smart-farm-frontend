@@ -9,6 +9,7 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import Link from 'next/link';
 import ModeToggle from '@/components/ui/modetoggle';
 import {
     NavigationMenu,
@@ -24,14 +25,15 @@ interface NavigationBarProps {
     isLoggedIn: boolean;
     onLogin: () => void;
     onLogout: () => void;
+    setActivePage: (page: "Recommendation" | "Analytics") => void;
 }
 
-function Navbar({ isLoggedIn, onLogin, onLogout }: NavigationBarProps) {
+function Navbar({ isLoggedIn, onLogin, onLogout, setActivePage }: NavigationBarProps) {
     return (
         <div>
             <NavigationMenu>
                 <NavigationMenuList className="flex justify-between items-center p-5">
-                    <NavigationMenuItem className="mx-auto">
+                    <NavigationMenuItem className="mx-auto" style={{cursor: "pointer"}} onClick={() => setActivePage("Recommendation")}>
                         Smart Farm Management
                     </NavigationMenuItem>
                     <div className="flex space-x-4">
@@ -53,6 +55,10 @@ function Navbar({ isLoggedIn, onLogin, onLogout }: NavigationBarProps) {
                                         <DropdownMenuLabel>My Account</DropdownMenuLabel>
                                         <DropdownMenuSeparator />
                                         <DropdownMenuItem onClick={isLoggedIn ? onLogout : onLogin}>{isLoggedIn ? 'Logout' : 'Login'}</DropdownMenuItem>
+                                        <DropdownMenuSeparator />
+                                        <DropdownMenuItem onClick={() => setActivePage("Analytics")}>
+                                                Analytics
+                                        </DropdownMenuItem>
                                         <DropdownMenuSeparator />
                                         <DropdownMenuItem>
                                             <a href="mailto:brienelijahsilah@gmail.com" className="flex items-center">

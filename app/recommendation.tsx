@@ -23,6 +23,8 @@ import {
     PlantTimeRecommendationResultCard
 } from "@/components/ui/crop-recommendation"
 
+import { postAnalytics } from "@/api/analyticsAPI"
+
 interface LocationData {
     longitude: number;
     latitude: number;
@@ -124,8 +126,17 @@ export default function CropRecommendation() {
             const recommendedCrops = response.crops.map(crop => crop.crop);
             setRecommendedCrops(recommendedCrops);
             setCropRecommendationStatus('success');
+            postAnalytics({
+                feature: "Crop Recommendation",
+                requestStatus: "success",
+            });
         } else if (response.status === 404) {
             setCropRecommendationStatus('unsuported');
+            postAnalytics({
+                feature: "Crop Recommendation",
+                requestStatus: "error",
+                errorReason: "unsupported",
+            });
         } else {
             const errorMessage = response.errorMessage;
             toast(
@@ -136,8 +147,22 @@ export default function CropRecommendation() {
                     action: <ToastAction onClick={() => handleGetCropRecommendation()} altText="Try again">Try again</ToastAction>,
                 }
             )
+            
             console.error(`Error: ${response.status}`);
             setCropRecommendationStatus('error');
+            if (response.status === 500) {
+                postAnalytics({
+                    feature: "Crop Recommendation",
+                    requestStatus: "error",
+                    errorReason: "server-error",
+                });
+            } else {
+                postAnalytics({
+                    feature: "Crop Recommendation",
+                    requestStatus: "error",
+                    errorReason: "client-error",
+                });
+            }
         }
     };
 
@@ -173,8 +198,17 @@ export default function CropRecommendation() {
             if (response.status === 200) {
                 setRecommendedPlantTime(response.dateRanges);
                 setPlantTimeRecommendationStatus('success');
+                postAnalytics({
+                    feature: "Plant Time Recommendation",
+                    requestStatus: "success",
+                });
             } else if (response.status === 404) {
                 setPlantTimeRecommendationStatus('unsuported');
+                postAnalytics({
+                    feature: "Plant Time Recommendation",
+                    requestStatus: "error",
+                    errorReason: "unsupported",
+                });
             } else {
                 const errorMessage = response.errorMessage;
                 toast(
@@ -187,6 +221,20 @@ export default function CropRecommendation() {
                 )
                 console.error(`Error: ${response.status}`);
                 setPlantTimeRecommendationStatus('error');
+                if (response.status === 500) {
+                    postAnalytics({
+                        feature: "Plant Time Recommendation",
+                        requestStatus: "error",
+                        errorReason: "server-error",
+                    });
+                } else {
+                    postAnalytics({
+                        feature: "Plant Time Recommendation",
+                        requestStatus: "error",
+                        errorReason: "client-error",
+                    });
+                
+                }
             }
         } catch (error) {
             console.error(error);

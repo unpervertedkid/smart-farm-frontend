@@ -33,7 +33,6 @@ export async function getCropRecommendation(
     },
   });
 
-  console.log(response)
   let crops: CropRecommendtionInterface[] = [];
   if (response.ok) {
     const data = await response.json();
