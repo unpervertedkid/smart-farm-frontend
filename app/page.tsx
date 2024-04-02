@@ -23,7 +23,7 @@ export default function Home() {
 
   return (
     <div>
-      <Navbar isLoggedIn={isLoggedIn} onLogin={handleLogin} onLogout={handleLogout} setActivePage={setActivePage} />
+      <Navbar isLoggedIn={isLoggedIn} onLogin={handleLogin} onLogout={handleLogout} activePage={activePage} setActivePage={setActivePage} />
       {activePage === "Recommendation" 
         ? <Recommendation />
         : <Analytics />

@@ -25,10 +25,11 @@ interface NavigationBarProps {
     isLoggedIn: boolean;
     onLogin: () => void;
     onLogout: () => void;
+    activePage: "Recommendation" | "Analytics";
     setActivePage: (page: "Recommendation" | "Analytics") => void;
 }
 
-function Navbar({ isLoggedIn, onLogin, onLogout, setActivePage }: NavigationBarProps) {
+function Navbar({ isLoggedIn, onLogin, onLogout, activePage, setActivePage }: NavigationBarProps) {
     return (
         <div>
             <NavigationMenu>
@@ -56,8 +57,8 @@ function Navbar({ isLoggedIn, onLogin, onLogout, setActivePage }: NavigationBarP
                                         <DropdownMenuSeparator />
                                         <DropdownMenuItem onClick={isLoggedIn ? onLogout : onLogin}>{isLoggedIn ? 'Logout' : 'Login'}</DropdownMenuItem>
                                         <DropdownMenuSeparator />
-                                        <DropdownMenuItem onClick={() => setActivePage("Analytics")}>
-                                                Analytics
+                                        <DropdownMenuItem onClick={() => setActivePage(activePage === "Analytics" ? 'Recommendation' : 'Analytics')}>
+                                            {activePage === "Analytics" ? "Recommendations" : "Analytics"}
                                         </DropdownMenuItem>
                                         <DropdownMenuSeparator />
                                         <DropdownMenuItem>
