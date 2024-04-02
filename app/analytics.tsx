@@ -32,12 +32,9 @@ export function Analytics() {
 
     useEffect(() => {
         getAnalytics().then((data) => {
-            console.log(`Data received: ${JSON.stringify(data)}`);
             setAnalyticsData(data);
-            console.log(analyticsData);
             setAnalyticsStatus("Success");
         }).catch((error) => {
-            console.log(error);
             setAnalyticsStatus("Error");
         });
     }, []); // empty dependency array
@@ -113,7 +110,7 @@ export function Analytics() {
                             </div>
                         </CardHeader>
                         <CardContent>
-                            <LineChartHero />
+                            <LineChartHero data={analyticsData} />
                         </CardContent>
                     </Card>
                     <Card>

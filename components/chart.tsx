@@ -1,3 +1,4 @@
+import { AnalyticsResponseInterface } from "@/api/analyticsAPI";
 import { LineChart } from '@tremor/react';
 
 interface DayAnalytics {
@@ -6,54 +7,40 @@ interface DayAnalytics {
     PlantTimeRecommendation: number;
     UnsupportedErrors: number;
     ClientErrors: number;
+    ServerErrors: number;
 }
-const chartdata: DayAnalytics[] = [
-    {
-        date: 'Jan 22',
-        CropRecommendation: 10,
-        PlantTimeRecommendation: 5,
-        UnsupportedErrors: 2,
-        ClientErrors: 0,
-    },
-    {
-        date: 'Feb 22',
-        CropRecommendation: 25,
-        PlantTimeRecommendation: 10,
-        UnsupportedErrors: 5,
-        ClientErrors: 1,
-    },
-    {
-        date: 'Mar 22',
-        CropRecommendation: 30,
-        PlantTimeRecommendation: 15,
-        UnsupportedErrors: 7,
-        ClientErrors: 2,
-    },
-    {
-        date: 'Apr 22',
-        CropRecommendation: 45,
-        PlantTimeRecommendation: 20,
-        UnsupportedErrors: 10,
-        ClientErrors: 3,
-    },
-    {
-        date: 'May 22',
-        CropRecommendation: 60,
-        PlantTimeRecommendation: 25,
-        UnsupportedErrors: 15,
-        ClientErrors: 5,
-    },
-];
 
+export function LineChartHero({ data }: { data: AnalyticsResponseInterface[] }) {
+    const groupedData = data.reduce((acc, curr) => {
+        const date = curr.requestTime.toISOString().split('T')[0]; // Strip time from date
+        if (!acc[date]) {
+            acc[date] = { date, CropRecommendation: 0, PlantTimeRecommendation: 0, UnsupportedErrors: 0, ClientErrors: 0, ServerErrors: 0 };
+        }
+        if (curr.feature === "Crop Recommendation") {
+            acc[date].CropRecommendation += 1;
+        } else if (curr.feature === "Plant Time Recommendation") {
+            acc[date].PlantTimeRecommendation += 1;
+        } else if (curr.errorReason) {
+            if (curr.errorReason === "unsupported") {
+                acc[date].UnsupportedErrors += 1;
+            } else if (curr.errorReason === "client-error") {
+                acc[date].ClientErrors += 1;
+            } else if (curr.errorReason === "server-error") {
+                acc[date].ServerErrors += 1;
+            }
+        }
+        return acc;
+    }, {} as Record<string, DayAnalytics>);
 
-export function LineChartHero() {
+    const chartdata = Object.values(groupedData);
+
     return (
         <LineChart
             className="h-80"
             data={chartdata}
             index="date"
-            categories={['CropRecommendation', 'PlantTimeRecommendation', 'UnsupportedErrors', 'ClientErrors']}
-            colors={['indigo', 'rose', 'green', 'blue']}
+            categories={['CropRecommendation', 'PlantTimeRecommendation', 'UnsupportedErrors', 'ClientErrors', 'ServerErrors']}
+            colors={['green', 'blue', 'purple', 'orange', 'red']}
             yAxisWidth={10}
             onValueChange={(v) => console.log(v)}
         />
