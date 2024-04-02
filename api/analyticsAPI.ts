@@ -21,6 +21,7 @@ export async function postAnalytics(
 }
 
 export interface AnalyticsResponseInterface {
+    requestTime: Date;
     feature: "Crop Recommendation" | "Plant Time Recommendation";
     requestStatus: "success" | "error";
     errorReason?: "unsupported" | "client-error" | "server-error";
@@ -28,6 +29,7 @@ export interface AnalyticsResponseInterface {
 
 export async function getAnalytics(): Promise<AnalyticsResponseInterface[]> {
     const response = await fetch("api/analytics");
+    console.log(response);
 
     let analytics: AnalyticsResponseInterface[] = [];
     if (response.ok) {
