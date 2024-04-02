@@ -33,7 +33,13 @@ export async function getAnalytics(): Promise<AnalyticsResponseInterface[]> {
 
     let analytics: AnalyticsResponseInterface[] = [];
     if (response.ok) {
-        analytics = await response.json();
+        const data = await response.json();
+        analytics = data.analytics.rows.map(row => ({
+            requestTime: new Date(row.request_time),
+            feature: row.feature,
+            requestStatus: row.request_status,
+            errorReason: row.error_reason !== "undefined" ? row.error_reason : undefined,
+        }));
     }
 
     return analytics;
