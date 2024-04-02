@@ -28,7 +28,7 @@ export interface AnalyticsResponseInterface {
     }
 
 export async function getAnalytics(): Promise<AnalyticsResponseInterface[]> {
-    const response = await fetch("api/analytics");
+    const response = await fetch("api/get-analytics");
     console.log(response);
 
     let analytics: AnalyticsResponseInterface[] = [];
