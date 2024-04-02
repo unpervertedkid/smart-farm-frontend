@@ -20,7 +20,11 @@ export default function Home() {
     <div>
       <Navbar isLoggedIn={isLoggedIn} onLogin={handleLogin} onLogout={handleLogout} />
       <CropRecommendation />
-      <AuthenticationDialog open={isAuthenticationDialogOpen} setOpen={setAuthenticationDialog} isLoggedIn={isLoggedIn} />
+      <AuthenticationDialog
+        open={isAuthenticationDialogOpen}
+        setOpen={setAuthenticationDialog}
+        isLoggedIn={isLoggedIn}
+        setIsLoggedIn={setIsLoggedIn} />
     </div>
   )
 }

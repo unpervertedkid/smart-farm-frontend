@@ -16,11 +16,12 @@ interface AuthenticationDialogProps {
     open: boolean;
     setOpen: (open: boolean) => void;
     isLoggedIn: boolean;
+    setIsLoggedIn: (isLoggedIn: boolean) => void;
 }
 
 type AuthenticationState = 'signin' | 'signup';
 
-export function AuthenticationDialog({ open, setOpen, isLoggedIn }: AuthenticationDialogProps) {
+export function AuthenticationDialog({ open, setOpen, isLoggedIn, setIsLoggedIn }: AuthenticationDialogProps) {
     const [authenticationState, setAuthenticationState] = useState<AuthenticationState>('signin');
 
     return (
