@@ -1,11 +1,12 @@
-import { getAnalytics, AnalyticsResponseInterface } from "@/api/analyticsAPI";
+import { AnalyticsResponseInterface, getAnalytics } from "@/api/analyticsAPI";
+import { LineChartHero } from "@/components/chart";
 import {
     Card,
     CardContent,
     CardDescription,
     CardHeader,
     CardTitle
-} from "@/components/ui/card"
+} from "@/components/ui/card";
 import {
     Table,
     TableBody,
@@ -14,37 +15,14 @@ import {
     TableHead,
     TableHeader,
     TableRow
-} from "@/components/ui/table"
+} from "@/components/ui/table";
 import {
     Barcode,
     CalendarDays,
     CircleCheckBig,
     Leaf
-} from "lucide-react"
-import { LineChartHero } from "@/components/chart"
-import { useEffect, useState } from "react"
-const recommendations = [
-    {
-        feature: "Crop recommendation",
-        status: "Success"
-    },
-    {
-        feature: "Plant time recommendation",
-        status: "Success"
-    },
-    {
-        feature: "Crop recommendation",
-        status: "Client Error"
-    },
-    {
-        feature: "Plant time recommendation",
-        status: "Unsupported"
-    },
-    {
-        feature: "Crop recommendation",
-        status: "Success"
-    },
-]
+} from "lucide-react";
+import { useEffect, useState } from "react";
 
 
 export function Analytics() {
@@ -64,6 +42,11 @@ export function Analytics() {
         });
     }, []); // empty dependency array
 
+    const cropRecommendationsCount = analyticsData.filter(analytics => analytics.feature === "Crop Recommendation").length;
+    const PlantTimeRecommendationCount = analyticsData.filter(analytics => analytics.feature === "Plant Time Recommendation").length;
+    const succesfulRecommendationsCount = analyticsData.filter(analytics => analytics.requestStatus === "success").length;
+    const recentRecommendations = analyticsData.slice(0, 5);
+
     return (
         <div>
             <main className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-8">
@@ -76,7 +59,7 @@ export function Analytics() {
                             <Barcode className="h-4 w-4 text-muted-foreground" />
                         </CardHeader>
                         <CardContent>
-                            <div className="text-2xl font-bold">150</div>
+                            <div className="text-2xl font-bold">{analyticsData.length}</div>
                             <p className="text-xs text-muted-foreground">
                                 +20.1% from last month
                             </p>
@@ -88,9 +71,9 @@ export function Analytics() {
                             <Leaf className="h-4 w-4 text-muted-foreground" />
                         </CardHeader>
                         <CardContent>
-                            <div className="text-2xl font-bold">+573</div>
+                            <div className="text-2xl font-bold">{cropRecommendationsCount}</div>
                             <p className="text-xs text-muted-foreground">
-                                +201 since last hour
+                                +10 since last day
                             </p>
                         </CardContent>
                     </Card>
@@ -100,9 +83,9 @@ export function Analytics() {
                             <CalendarDays className="h-4 w-4 text-muted-foreground" />
                         </CardHeader>
                         <CardContent>
-                            <div className="text-2xl font-bold">+573</div>
+                            <div className="text-2xl font-bold">{PlantTimeRecommendationCount}</div>
                             <p className="text-xs text-muted-foreground">
-                                +201 since last hour
+                                +5 since last day
                             </p>
                         </CardContent>
                     </Card>
@@ -112,9 +95,9 @@ export function Analytics() {
                             <CircleCheckBig className="h-4 w-4 text-muted-foreground" />
                         </CardHeader>
                         <CardContent>
-                            <div className="text-2xl font-bold">+573</div>
+                            <div className="text-2xl font-bold">{succesfulRecommendationsCount}</div>
                             <p className="text-xs text-muted-foreground">
-                                +201 since last hour
+                                +201 since last day
                             </p>
                         </CardContent>
                     </Card>
@@ -147,10 +130,10 @@ export function Analytics() {
                                     </TableRow>
                                 </TableHeader>
                                 <TableBody>
-                                    {recommendations.map((recommendation) => (
-                                        <TableRow key={recommendation.status}>
+                                    {recentRecommendations.map((recommendation) => (
+                                        <TableRow key={recommendation.requestStatus}>
                                             <TableCell className="font-medium">{recommendation.feature}</TableCell>
-                                            <TableCell className="text-right">{recommendation.status}</TableCell>
+                                            <TableCell className="text-right">{recommendation.requestStatus}</TableCell>
                                         </TableRow>
                                     ))}
                                 </TableBody>
