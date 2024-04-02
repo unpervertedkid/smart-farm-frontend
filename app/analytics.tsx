@@ -57,7 +57,8 @@ export function Analytics() {
             setAnalyticsData(data);
             console.log(analyticsData);
             setAnalyticsStatus("Success");
-        }).catch(() => {
+        }).catch((error) => {
+            console.log(error);
             setAnalyticsStatus("Error");
         });
     }, []); // empty dependency array
