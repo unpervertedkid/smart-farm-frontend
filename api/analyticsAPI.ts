@@ -1,45 +1,61 @@
+export const fetchCache = "force-no-store";
 export interface AnalyticsPostRequestInterface {
-    feature: "Crop Recommendation" | "Plant Time Recommendation";
-    requestStatus: "success" | "error";
-    errorReason?: "unsupported" | "client-error" | "server-error";
-    }
+  feature: "Crop Recommendation" | "Plant Time Recommendation";
+  requestStatus: "success" | "error";
+  errorReason?: "unsupported" | "client-error" | "server-error";
+}
 
 export async function postAnalytics(
-    data: AnalyticsPostRequestInterface
+  data: AnalyticsPostRequestInterface
 ): Promise<Response> {
-    const response = await fetch(
-        `api/add-analytic?feature=${data.feature}&requestStatus=${data.requestStatus}&errorReason=${data.errorReason}`,
-        {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-            },
-        }
-    );
+  const response = await fetch(
+    `api/add-analytic?feature=${data.feature}&requestStatus=${data.requestStatus}&errorReason=${data.errorReason}`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
 
-    return response;
+  return response;
 }
 
 export interface AnalyticsResponseInterface {
-    requestTime: Date;
-    feature: "Crop Recommendation" | "Plant Time Recommendation";
-    requestStatus: "success" | "error";
-    errorReason?: "unsupported" | "client-error" | "server-error";
+  requestTime: Date;
+  feature: "Crop Recommendation" | "Plant Time Recommendation";
+  requestStatus: "success" | "error";
+  errorReason?: "unsupported" | "client-error" | "server-error";
 }
 
 export async function getAnalytics(): Promise<AnalyticsResponseInterface[]> {
-    const response = await fetch("api/get-analytics");
+  const response = await fetch("api/get-analytics");
 
-    let analytics: AnalyticsResponseInterface[] = [];
-    if (response.ok) {
-        const data = await response.json();
-        analytics = data.analytics.rows.map((row: { request_time: string | number | Date; feature: any; request_status: any; error_reason: string; }) => ({
-            requestTime: new Date(row.request_time),
-            feature: row.feature as "Crop Recommendation" | "Plant Time Recommendation",
-            requestStatus: row.request_status as "success" | "error",
-            errorReason: row.error_reason !== "undefined" ? row.error_reason as "unsupported" | "client-error" | "server-error" : undefined,
-        }));
-    }
+  let analytics: AnalyticsResponseInterface[] = [];
+  if (response.ok) {
+    const data = await response.json();
+    analytics = data.analytics.rows.map(
+      (row: {
+        request_time: string | number | Date;
+        feature: any;
+        request_status: any;
+        error_reason: string;
+      }) => ({
+        requestTime: new Date(row.request_time),
+        feature: row.feature as
+          | "Crop Recommendation"
+          | "Plant Time Recommendation",
+        requestStatus: row.request_status as "success" | "error",
+        errorReason:
+          row.error_reason !== "undefined"
+            ? (row.error_reason as
+                | "unsupported"
+                | "client-error"
+                | "server-error")
+            : undefined,
+      })
+    );
+  }
 
-    return analytics;
+  return analytics;
 }
