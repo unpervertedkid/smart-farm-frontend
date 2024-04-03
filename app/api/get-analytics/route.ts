@@ -4,7 +4,6 @@ import { NextResponse } from "next/server";
 export async function GET(request: Request) {
   try {
     let isanalyticsrequest = request.url.includes("analytics");
-    console.log(`isanalyticsrequest: ${isanalyticsrequest}`);
     if (!isanalyticsrequest) throw new Error("Invalid request");
     else {
       const analytics = await sql`SELECT * FROM Analytics;`;
